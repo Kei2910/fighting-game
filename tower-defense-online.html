@@ -6,350 +6,112 @@
 <title>BLADE FRONTIER</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Rajdhani:wght@400;600;700&display=swap');
-
 :root {
-  --sky: #87ceeb;
-  --sky-dark: #4a90c4;
-  --land: #4a7c2f;
-  --land-dark: #2d5a1b;
-  --sea: #1a4a7a;
-  --sea-dark: #0d2a4a;
-  --hp-green: #44ff88;
-  --hp-red: #ff4444;
-  --gold: #ffd700;
-  --panel-bg: #0a0a14;
-  --border: #1e2a3a;
+  --gold:#ffd700; --blue:#44aaff; --red:#ff6644;
+  --green:#44ff88; --panel:#0a0c14; --border:#1e2a3a;
 }
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+body{background:#050810;font-family:'Rajdhani',sans-serif;color:#fff;height:100vh;overflow:hidden;display:flex;flex-direction:column;align-items:center;touch-action:none;user-select:none;}
 
-* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+/* LOBBY */
+#lobby{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;gap:16px;width:min(360px,94vw);}
+.logo{font-family:'Cinzel',serif;font-size:clamp(26px,7vw,44px);font-weight:900;color:var(--gold);letter-spacing:4px;text-shadow:0 0 20px #ffd70066;text-align:center;}
+.logo-sub{font-size:10px;color:#334;letter-spacing:4px;text-align:center;margin-top:-10px;}
+.card{background:#0d1220;border:1px solid var(--border);border-radius:10px;padding:18px;width:100%;}
+.card-title{font-size:10px;color:#334;letter-spacing:3px;margin-bottom:10px;font-weight:700;}
+.row{display:flex;gap:8px;}
+input[type=text]{flex:1;background:#070b14;border:1.5px solid var(--border);border-radius:6px;color:#fff;font-family:'Cinzel',serif;font-size:15px;letter-spacing:3px;padding:10px 12px;outline:none;text-transform:uppercase;transition:border-color 0.2s;}
+input[type=text]:focus{border-color:var(--gold);}
+input[type=text]::placeholder{color:#223;font-size:11px;}
+.btn-gold{background:linear-gradient(135deg,#b8860b,#ffd700,#b8860b);color:#000;border:none;border-radius:6px;font-family:'Cinzel',serif;font-weight:700;font-size:13px;letter-spacing:1px;padding:10px 16px;cursor:pointer;transition:transform 0.1s,filter 0.1s;white-space:nowrap;}
+.btn-gold:active{transform:scale(0.94);filter:brightness(0.85);}
+.btn-gold:disabled{background:#222;color:#444;cursor:default;}
+#lobby-status{font-size:13px;letter-spacing:2px;text-align:center;color:var(--gold);min-height:20px;}
+#lobby-status.ok{color:#44ff88;}
+#lobby-status.err{color:#ff4444;}
+#lobby-status.wait{animation:pulse 1.4s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+.hint{font-size:11px;color:#334;text-align:center;line-height:1.7;}
 
-body {
-  background: #050810;
-  font-family: 'Rajdhani', sans-serif;
-  color: #fff;
-  height: 100vh;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  touch-action: none;
-  user-select: none;
-}
+/* GAME */
+#game-wrap{display:none;flex-direction:column;width:100vw;height:100vh;overflow:hidden;}
+#view-enemy{flex:1;position:relative;overflow:hidden;border-bottom:2px solid #ffd70033;}
+#view-self{flex:1;position:relative;overflow:hidden;border-bottom:1px solid var(--border);}
+canvas{display:block;width:100%;height:100%;}
+.hpbar-wrap{position:absolute;top:3px;left:4px;right:4px;display:flex;align-items:center;gap:5px;pointer-events:none;z-index:10;}
+.hp-label{font-family:'Cinzel',serif;font-size:9px;color:var(--gold);white-space:nowrap;}
+.hp-bg{flex:1;height:7px;background:#111;border-radius:4px;overflow:hidden;border:1px solid #222;}
+.hp-fill{height:100%;border-radius:4px;transition:width 0.2s;}
+#my-hp-fill{background:linear-gradient(90deg,#44ff88,#00cc55);}
+#en-hp-fill{background:linear-gradient(90deg,#ff6644,#cc2200);}
+.hp-num{font-size:9px;color:#aaa;min-width:26px;text-align:right;}
+.view-label{position:absolute;top:12px;left:50%;transform:translateX(-50%);font-size:8px;color:#223;letter-spacing:3px;pointer-events:none;}
 
-/* ===== LOBBY ===== */
-#lobby {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  gap: 18px;
-  width: min(380px, 94vw);
-}
+/* CTRL */
+#ctrl-area{height:155px;background:#070b14;border-top:1px solid var(--border);display:flex;flex-direction:column;padding:5px 7px 4px;gap:4px;flex-shrink:0;}
+#tower-ctrl{display:flex;gap:5px;align-items:center;}
+.btn-move{background:#0f1828;border:1.5px solid #2a3a50;border-radius:6px;color:#88aacc;font-size:18px;width:42px;height:36px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.08s,transform 0.06s;}
+.btn-move:active,.btn-move.pressed{background:#182840;transform:scale(0.91);}
+.btn-attack{background:linear-gradient(135deg,#3a0a0a,#7a1a1a);border:1.5px solid #aa3333;border-radius:6px;color:#ffaaaa;font-size:11px;font-family:'Cinzel',serif;letter-spacing:1px;padding:0 10px;height:36px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform 0.06s,filter 0.08s;flex:1;}
+.btn-attack:active{transform:scale(0.93);filter:brightness(1.3);}
+#my-hp-ctrl{font-size:10px;color:#446;letter-spacing:1px;flex-shrink:0;}
+#my-hp-ctrl span{color:#44ff88;font-weight:700;font-size:13px;}
+#troop-btns{display:flex;gap:3px;overflow-x:auto;padding-bottom:2px;flex:1;align-items:flex-start;}
+#troop-btns::-webkit-scrollbar{height:2px;}
+#troop-btns::-webkit-scrollbar-thumb{background:#223;}
+.troop-btn{flex-shrink:0;width:52px;background:#0a0f1a;border-radius:7px;cursor:pointer;display:flex;flex-direction:column;align-items:center;padding:3px 2px 2px;gap:1px;transition:transform 0.07s,filter 0.07s;position:relative;border:1.5px solid transparent;}
+.troop-btn:active{transform:scale(0.91);filter:brightness(1.2);}
+.troop-btn.disabled{opacity:0.35;pointer-events:none;}
+.troop-btn.sky-btn{border-color:#4ab8e8;background:#081420;}
+.troop-btn.land-btn{border-color:#5a9e30;background:#081408;}
+.troop-btn.sea-btn{border-color:#2a7ab8;background:#040c18;}
+.troop-icon{font-size:19px;line-height:1;}
+.troop-name{font-size:7px;color:#888;text-align:center;}
+.troop-cost{font-size:9px;font-weight:700;}
+.sky-btn .troop-cost{color:#4ab8e8;}
+.land-btn .troop-cost{color:#7acc44;}
+.sea-btn .troop-cost{color:#44aaff;}
+.lane-badge{position:absolute;top:2px;right:2px;font-size:7px;width:11px;height:11px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
+.sky-badge{background:#4ab8e822;color:#4ab8e8;}
+.land-badge{background:#5a9e3022;color:#7acc44;}
+.sea-badge{background:#2a7ab822;color:#44aaff;}
 
-.logo {
-  font-family: 'Cinzel', serif;
-  font-size: clamp(28px, 7vw, 48px);
-  font-weight: 900;
-  color: #ffd700;
-  letter-spacing: 4px;
-  text-shadow: 0 0 20px #ffd70066, 0 0 60px #ffd70022;
-  text-align: center;
-}
-.logo-sub { font-size: 11px; color: #446; letter-spacing: 4px; text-align: center; margin-top: -12px; }
-
-.card {
-  background: #0d1220;
-  border: 1px solid #1e2a3a;
-  border-radius: 10px;
-  padding: 20px;
-  width: 100%;
-}
-.card-title { font-size: 11px; color: #334; letter-spacing: 3px; margin-bottom: 12px; font-weight: 700; }
-
-.row { display: flex; gap: 8px; }
-
-input[type=text] {
-  flex: 1;
-  background: #070b14;
-  border: 1.5px solid #1e2a3a;
-  border-radius: 6px;
-  color: #fff;
-  font-family: 'Cinzel', serif;
-  font-size: 16px;
-  letter-spacing: 3px;
-  padding: 11px 14px;
-  outline: none;
-  text-transform: uppercase;
-  transition: border-color 0.2s;
-}
-input[type=text]:focus { border-color: #ffd700; }
-input[type=text]::placeholder { color: #223; font-size: 12px; }
-
-.btn-gold {
-  background: linear-gradient(135deg, #b8860b, #ffd700, #b8860b);
-  color: #000;
-  border: none;
-  border-radius: 6px;
-  font-family: 'Cinzel', serif;
-  font-weight: 700;
-  font-size: 14px;
-  letter-spacing: 1px;
-  padding: 11px 18px;
-  cursor: pointer;
-  transition: transform 0.1s, filter 0.1s;
-  white-space: nowrap;
-}
-.btn-gold:active { transform: scale(0.94); filter: brightness(0.85); }
-.btn-gold:disabled { background: #222; color: #444; cursor: default; }
-
-#lobby-status {
-  font-size: 14px;
-  letter-spacing: 2px;
-  text-align: center;
-  color: #ffd700;
-  min-height: 20px;
-  animation: pulse 1.4s infinite;
-}
-#lobby-status.ok { color: #44ff88; animation: none; }
-#lobby-status.err { color: #ff4444; animation: none; }
-@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
-
-.hint { font-size: 12px; color: #334; text-align: center; line-height: 1.7; letter-spacing: 1px; }
-
-/* ===== GAME SCREEN ===== */
-#game-wrap {
-  display: none;
-  flex-direction: column;
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
-}
-
-/* Top: enemy view */
-#view-enemy {
-  flex: 1;
-  position: relative;
-  overflow: hidden;
-  border-bottom: 2px solid #ffd70044;
-}
-
-/* Bottom: own view */
-#view-self {
-  flex: 1;
-  position: relative;
-  overflow: hidden;
-  border-bottom: 2px solid #1e2a3a;
-}
-
-canvas { display: block; width: 100%; height: 100%; }
-
-/* HP bars overlay */
-.hpbar-wrap {
-  position: absolute;
-  top: 4px; left: 4px; right: 4px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  pointer-events: none;
-  z-index: 10;
-}
-.hp-label { font-family: 'Cinzel', serif; font-size: 10px; color: #ffd700; letter-spacing: 1px; white-space: nowrap; }
-.hp-bg { flex: 1; height: 8px; background: #111; border-radius: 4px; overflow: hidden; border: 1px solid #222; }
-.hp-fill { height: 100%; border-radius: 4px; transition: width 0.2s; }
-#my-hp-fill   { background: linear-gradient(90deg, #44ff88, #00cc55); }
-#en-hp-fill   { background: linear-gradient(90deg, #ff6644, #cc2200); }
-.hp-num { font-size: 10px; color: #aaa; min-width: 28px; text-align: right; }
-
-.view-label {
-  position: absolute;
-  top: 14px; left: 50%;
-  transform: translateX(-50%);
-  font-size: 9px;
-  color: #334;
-  letter-spacing: 3px;
-  pointer-events: none;
-  z-index: 5;
-}
-
-/* ===== CONTROL UI ===== */
-#ctrl-area {
-  height: 160px;
-  background: #070b14;
-  border-top: 1px solid #1e2a3a;
-  display: flex;
-  flex-direction: column;
-  padding: 6px 8px 4px;
-  gap: 5px;
-  flex-shrink: 0;
-}
-
-#tower-ctrl {
-  display: flex;
-  gap: 6px;
-  align-items: center;
-}
-
-.btn-move {
-  background: #0f1828;
-  border: 1.5px solid #2a3a50;
-  border-radius: 6px;
-  color: #88aacc;
-  font-size: 18px;
-  width: 44px; height: 38px;
-  cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  transition: background 0.08s, transform 0.06s;
-}
-.btn-move:active, .btn-move.pressed { background: #182840; transform: scale(0.91); }
-
-.btn-attack {
-  background: linear-gradient(135deg, #3a0a0a, #7a1a1a);
-  border: 1.5px solid #aa3333;
-  border-radius: 6px;
-  color: #ffaaaa;
-  font-size: 11px;
-  font-family: 'Cinzel', serif;
-  letter-spacing: 1px;
-  padding: 0 12px;
-  height: 38px;
-  cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  transition: transform 0.06s, filter 0.08s;
-  flex: 1;
-}
-.btn-attack:active { transform: scale(0.93); filter: brightness(1.3); }
-
-#my-hp-ctrl {
-  font-size: 11px;
-  color: #446;
-  letter-spacing: 1px;
-  text-align: right;
-  flex-shrink: 0;
-}
-#my-hp-ctrl span { color: #44ff88; font-weight: 700; font-size: 14px; }
-
-#troop-btns {
-  display: flex;
-  gap: 4px;
-  overflow-x: auto;
-  padding-bottom: 2px;
-  flex: 1;
-  align-items: flex-start;
-}
-#troop-btns::-webkit-scrollbar { height: 2px; }
-#troop-btns::-webkit-scrollbar-thumb { background: #223; }
-
-.troop-btn {
-  flex-shrink: 0;
-  width: 54px;
-  background: #0a0f1a;
-  border-radius: 7px;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 4px 2px 3px;
-  gap: 1px;
-  transition: transform 0.07s, filter 0.07s;
-  position: relative;
-  border: 1.5px solid transparent;
-}
-.troop-btn:active { transform: scale(0.91); filter: brightness(1.2); }
-.troop-btn.disabled { opacity: 0.38; pointer-events: none; }
-.troop-btn.sky-btn   { border-color: #4ab8e8; background: #081420; }
-.troop-btn.land-btn  { border-color: #5a9e30; background: #081408; }
-.troop-btn.sea-btn   { border-color: #2a7ab8; background: #040c18; }
-
-.troop-icon { font-size: 20px; line-height: 1; }
-.troop-name { font-size: 8px; letter-spacing: 0.5px; color: #888; text-align: center; }
-.troop-cost { font-size: 9px; font-weight: 700; }
-.troop-btn.sky-btn  .troop-cost { color: #4ab8e8; }
-.troop-btn.land-btn .troop-cost { color: #7acc44; }
-.troop-btn.sea-btn  .troop-cost { color: #44aaff; }
-.lane-badge {
-  position: absolute;
-  top: 2px; right: 2px;
-  font-size: 7px;
-  width: 12px; height: 12px;
-  border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-}
-.sky-badge  { background: #4ab8e844; color: #4ab8e8; }
-.land-badge { background: #5a9e3044; color: #7acc44; }
-.sea-badge  { background: #2a7ab844; color: #44aaff; }
-
-#disconnect-msg {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: #000000cc;
-  z-index: 200;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  gap: 14px;
-  font-family: 'Cinzel', serif;
-}
-#disconnect-msg h2 { color: #ff4444; font-size: 22px; letter-spacing: 3px; }
-#disconnect-msg p  { color: #888; font-size: 13px; }
-
-#result-overlay {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: #000000cc;
-  z-index: 200;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  gap: 16px;
-  backdrop-filter: blur(6px);
-}
-#result-overlay h1 { font-family: 'Cinzel', serif; font-size: clamp(32px,8vw,54px); letter-spacing: 5px; }
-#result-overlay .btn-gold { font-size: 16px; padding: 13px 32px; }
+#result-overlay{display:none;position:fixed;inset:0;background:#000000cc;z-index:200;align-items:center;justify-content:center;flex-direction:column;gap:16px;backdrop-filter:blur(6px);}
+#result-overlay h1{font-family:'Cinzel',serif;font-size:clamp(30px,8vw,52px);letter-spacing:5px;}
+#disconnect-msg{display:none;position:fixed;inset:0;background:#000000cc;z-index:200;align-items:center;justify-content:center;flex-direction:column;gap:14px;}
+#disconnect-msg h2{color:#ff4444;font-family:'Cinzel',serif;font-size:20px;letter-spacing:3px;}
+#disconnect-msg p{color:#888;font-size:12px;}
+#role-banner{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'Cinzel',serif;font-size:22px;color:var(--gold);letter-spacing:4px;text-shadow:0 0 20px #ffd70088;z-index:150;pointer-events:none;text-align:center;background:#000000cc;padding:20px 32px;border-radius:10px;border:1px solid #ffd70044;}
 </style>
 </head>
 <body>
 
-<!-- ===== LOBBY ===== -->
 <div id="lobby">
   <div>
     <div class="logo">BLADE FRONTIER</div>
     <div class="logo-sub">ONLINE TOWER DEFENSE</div>
   </div>
-
   <div class="card">
     <div class="card-title">⚔ あいことばでマッチング</div>
     <div class="row">
       <input type="text" id="room-input" placeholder="あいことばを入力" maxlength="20">
       <button class="btn-gold" id="btn-join">参加</button>
     </div>
-    <div style="margin-top:10px">
-      <div id="lobby-status">あいことばを入力してください</div>
-    </div>
+    <div style="margin-top:10px"><div id="lobby-status" class="ok">あいことばを入力してください</div></div>
   </div>
-
-  <div class="hint">
-    同じあいことばを入力した2人がマッチ<br>
-    先に入力した人が青陣営・後から入力が赤陣営
-  </div>
+  <div class="hint">同じあいことばを入力した2人がマッチ<br>先→青陣営 / 後→赤陣営</div>
 </div>
 
-<!-- ===== GAME ===== -->
 <div id="game-wrap">
-  <!-- 上画面：敵陣地 -->
   <div id="view-enemy">
     <canvas id="canvas-enemy"></canvas>
     <div class="view-label">ENEMY TERRITORY</div>
-    <div class="hpbar-wrap" style="top:auto;bottom:4px;">
-      <div class="hp-label" id="en-name">ENEMY</div>
+    <div class="hpbar-wrap" style="top:auto;bottom:3px;">
+      <div class="hp-label">ENEMY</div>
       <div class="hp-bg"><div class="hp-fill" id="en-hp-fill" style="width:100%"></div></div>
       <div class="hp-num" id="en-hp-num">100</div>
     </div>
   </div>
-
-  <!-- 下画面：自陣地 -->
   <div id="view-self">
     <canvas id="canvas-self"></canvas>
     <div class="view-label">YOUR TERRITORY</div>
@@ -359,8 +121,6 @@ canvas { display: block; width: 100%; height: 100%; }
       <div class="hp-num" id="my-hp-num">100</div>
     </div>
   </div>
-
-  <!-- 操作UI -->
   <div id="ctrl-area">
     <div id="tower-ctrl">
       <button class="btn-move" id="btn-back">◀</button>
@@ -372,27 +132,22 @@ canvas { display: block; width: 100%; height: 100%; }
   </div>
 </div>
 
-<!-- 切断メッセージ -->
+<div id="result-overlay">
+  <h1 id="result-title">WIN</h1>
+  <button class="btn-gold" onclick="location.reload()">もう一度</button>
+</div>
 <div id="disconnect-msg">
   <h2>DISCONNECTED</h2>
   <p>相手が切断しました</p>
   <button class="btn-gold" onclick="location.reload()">ロビーに戻る</button>
 </div>
-
-<!-- 結果 -->
-<div id="result-overlay">
-  <h1 id="result-title">WIN</h1>
-  <button class="btn-gold" onclick="location.reload()">もう一度</button>
-</div>
+<div id="role-banner" style="display:none"></div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getDatabase, ref, set, get, update, onValue, onDisconnect, remove }
+import { getDatabase, ref, set, get, update, onValue, onDisconnect }
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
-// ============================================================
-// FIREBASE CONFIG
-// ============================================================
 const firebaseConfig = {
   apiKey: "AIzaSyA89lo2epwcfZHcEMn8ckGPwanVsEgQqkU",
   authDomain: "fighting-game-35a21.firebaseapp.com",
@@ -406,649 +161,598 @@ const fbApp = initializeApp(firebaseConfig);
 const db = getDatabase(fbApp);
 
 // ============================================================
-// TROOP DEFINITIONS (10種類)
-// lane: 'sky' | 'land' | 'sea'
+// TROOP DEFINITIONS
 // ============================================================
 const TROOPS = [
-  { id:0, name:'ハヤブサ', icon:'🦅', lane:'sky',  cost:8,  hp:30,  atk:6,  def:1,  spd:2.2, range:60 },
-  { id:1, name:'ドラゴン', icon:'🐉', lane:'sky',  cost:20, hp:80,  atk:18, def:4,  spd:1.0, range:80 },
-  { id:2, name:'騎士',    icon:'🛡️', lane:'land', cost:10, hp:60,  atk:8,  def:6,  spd:0.8, range:40 },
-  { id:3, name:'弓兵',    icon:'🏹', lane:'land', cost:7,  hp:25,  atk:12, def:1,  spd:1.2, range:90 },
-  { id:4, name:'オーガ',  icon:'👹', lane:'land', cost:18, hp:120, atk:22, def:3,  spd:0.6, range:35 },
-  { id:5, name:'忍者',    icon:'🥷', lane:'land', cost:9,  hp:35,  atk:10, def:2,  spd:2.5, range:30 },
-  { id:6, name:'クラーケン',icon:'🐙',lane:'sea',  cost:16, hp:90,  atk:16, def:5,  spd:0.7, range:50 },
-  { id:7, name:'人魚',    icon:'🧜', lane:'sea',  cost:8,  hp:40,  atk:9,  def:2,  spd:1.8, range:55 },
-  { id:8, name:'海竜',    icon:'🐲', lane:'sea',  cost:22, hp:130, atk:25, def:6,  spd:0.5, range:70 },
-  { id:9, name:'フェニックス',icon:'🔥',lane:'sky', cost:15, hp:55,  atk:14, def:3,  spd:1.5, range:75 },
+  {id:0,name:'ハヤブサ',icon:'🦅',lane:'sky', cost:8, hp:30, atk:6, def:1,spd:2.2,range:60},
+  {id:1,name:'ドラゴン',icon:'🐉',lane:'sky', cost:20,hp:80, atk:18,def:4,spd:1.0,range:80},
+  {id:2,name:'騎士',   icon:'🛡️',lane:'land',cost:10,hp:60, atk:8, def:6,spd:0.8,range:40},
+  {id:3,name:'弓兵',   icon:'🏹',lane:'land',cost:7, hp:25, atk:12,def:1,spd:1.2,range:90},
+  {id:4,name:'オーガ', icon:'👹',lane:'land',cost:18,hp:120,atk:22,def:3,spd:0.6,range:35},
+  {id:5,name:'忍者',   icon:'🥷',lane:'land',cost:9, hp:35, atk:10,def:2,spd:2.5,range:30},
+  {id:6,name:'クラーケン',icon:'🐙',lane:'sea',cost:16,hp:90,atk:16,def:5,spd:0.7,range:50},
+  {id:7,name:'人魚',   icon:'🧜',lane:'sea', cost:8, hp:40, atk:9, def:2,spd:1.8,range:55},
+  {id:8,name:'海竜',   icon:'🐲',lane:'sea', cost:22,hp:130,atk:25,def:6,spd:0.5,range:70},
+  {id:9,name:'フェニックス',icon:'🔥',lane:'sky',cost:15,hp:55,atk:14,def:3,spd:1.5,range:75},
 ];
 
-// ============================================================
-// GAME CONSTANTS
-// ============================================================
-const MAP_W = 1200;       // 論理マップ幅
-const SELF_SPAWN = 100;   // 自陣召喚X固定
-const HIDDEN_START = 500; // 見えないゾーン開始X
-const HIDDEN_END   = 700; // 見えないゾーン終了X
-const ENEMY_BASE_X = MAP_W - 80; // 敵タワーX
-const MY_BASE_X    = 80;         // 自タワーX（初期）
-const TOWER_SPEED  = 2.0;
-const TOWER_ATK_BASE = 15;
-const TOWER_ATK_RANGE = 70;
-const INVADE_DMG_RATE = 0.05; // 侵入時/フレームのHP削り量
-
-// Lane Y positions (論理)
-const LANE_Y = { sky: 20, land: 55, sea: 90 };
-const LANE_H = 30;
+const MAP_W=1200, SELF_SPAWN=100, HIDDEN_START=500, HIDDEN_END=700;
+const ENEMY_BASE_X=MAP_W-80, MY_BASE_X=80;
+const TOWER_SPEED=2.0, TOWER_ATK_BASE=15, TOWER_ATK_RANGE=70;
+const INVADE_DMG=0.04;
 
 // ============================================================
-// GAME STATE
+// STATE
 // ============================================================
-let myRole = null; // 'p1' | 'p2'
-let roomRef = null;
-let gameActive = false;
+let myRole=null, roomRef=null, gameActive=false;
+let troopIdCtr=0;
 
-// ホスト(p1)だけがゲームロジックを計算してFirebaseに書き込む
-// クライアント(p2)はFirebaseを読んで描画するだけ
-
-const gs = {
-  p1: { hp: 100, tx: MY_BASE_X, troops: [], attackTimer: 0, invading: false },
-  p2: { hp: 100, tx: MY_BASE_X, troops: [], attackTimer: 0, invading: false },
-  tick: 0,
-  over: false,
-  winner: null
+// ゲーム状態（p1がmaster計算）
+const gs={
+  p1:{hp:100,tx:MY_BASE_X,troops:[],atkTimer:0},
+  p2:{hp:100,tx:MY_BASE_X,troops:[],atkTimer:0},
+  tick:0, over:false, winner:null
 };
 
-// 局所入力（自分の操作）
-const myInput = { fwd: false, back: false, attack: false, spawnTroop: null };
+// 自分の入力（ローカル）
+const myInput={fwd:false,back:false,attack:false,spawnTroop:null};
+// 相手の入力（Firebaseから受信）
+let remoteInput={fwd:false,back:false,attack:false,spawnTroop:null};
 
-// ============================================================
-// CANVAS SETUP
-// ============================================================
-const cvEnemy = document.getElementById('canvas-enemy');
-const cvSelf  = document.getElementById('canvas-self');
-const ctxE = cvEnemy.getContext('2d');
-const ctxS = cvSelf.getContext('2d');
+// Canvas
+const cvE=document.getElementById('canvas-enemy');
+const cvS=document.getElementById('canvas-self');
+const ctxE=cvE.getContext('2d');
+const ctxS=cvS.getContext('2d');
 
-function resizeCanvases() {
-  const w = window.innerWidth;
-  const h = (window.innerHeight - 160) / 2;
-  [cvEnemy, cvSelf].forEach(c => { c.width = w; c.height = h; });
+function resizeCvs(){
+  const w=window.innerWidth;
+  const h=Math.floor((window.innerHeight-155)/2);
+  [cvE,cvS].forEach(c=>{c.width=w;c.height=h;});
 }
-resizeCanvases();
-window.addEventListener('resize', resizeCanvases);
+resizeCvs();
+window.addEventListener('resize',resizeCvs);
 
 // ============================================================
-// LOBBY / MATCHMAKING
+// LOBBY
 // ============================================================
-document.getElementById('btn-join').addEventListener('click', async () => {
-  const word = document.getElementById('room-input').value.trim().toUpperCase();
-  if (!word) return;
-  document.getElementById('btn-join').disabled = true;
-  setLobbyStatus('接続中...', '');
+document.getElementById('btn-join').addEventListener('click',async()=>{
+  const word=document.getElementById('room-input').value.trim().toUpperCase();
+  if(!word)return;
+  document.getElementById('btn-join').disabled=true;
+  setStatus('接続中...','');
 
-  roomRef = ref(db, 'td_rooms/' + word);
-  const snap = await get(roomRef);
-  const data = snap.val();
+  roomRef=ref(db,'bf_rooms/'+word);
+  let snap;
+  try{ snap=await get(roomRef); }
+  catch(e){ setStatus('接続エラー。再試行してください','err'); document.getElementById('btn-join').disabled=false; return; }
 
-  if (!data || data.status === 'finished' || data.status === 'abandoned') {
-    // 部屋作成 → p1
-    myRole = 'p1';
-    const initState = buildInitState();
-    await set(roomRef, { status: 'waiting', host: 'p1', state: initState,
-      input_p1: { fwd:false, back:false, attack:false, spawnTroop:null },
-      input_p2: { fwd:false, back:false, attack:false, spawnTroop:null }
+  const data=snap.val();
+
+  if(!data || data.status==='finished' || data.status==='abandoned'){
+    // 部屋作成 → p1（ホスト）
+    myRole='p1';
+    const initGs=makeInitGs();
+    await set(roomRef,{
+      status:'waiting',
+      gs: initGs,
+      input_p1:{fwd:false,back:false,attack:false,spawnTroop:null},
+      input_p2:{fwd:false,back:false,attack:false,spawnTroop:null},
+      ts: Date.now()
     });
-    onDisconnect(roomRef).update({ status: 'abandoned' });
-    setLobbyStatus('⏳ 相手を待っています...', '');
-    listenRoom();
-  } else if (data.status === 'waiting') {
-    // 参加 → p2
-    myRole = 'p2';
-    await update(roomRef, { status: 'playing' });
-    setLobbyStatus('マッチ成立！', 'ok');
-    listenRoom();
-    startGame();
+    onDisconnect(roomRef).update({status:'abandoned'});
+    setStatus('⏳ 相手を待っています...','wait');
+    startListening();
+  } else if(data.status==='waiting'){
+    // 部屋参加 → p2（クライアント）
+    myRole='p2';
+    await update(roomRef,{status:'playing'});
+    setStatus('マッチ成立！','ok');
+    startListening();
+    // p2は即座にゲーム画面へ
+    enterGame();
   } else {
-    setLobbyStatus('その部屋は使用中です', 'err');
-    document.getElementById('btn-join').disabled = false;
+    setStatus('その部屋は使用中です','err');
+    document.getElementById('btn-join').disabled=false;
   }
 });
 
-function setLobbyStatus(msg, cls) {
-  const el = document.getElementById('lobby-status');
-  el.textContent = msg; el.className = cls;
+function setStatus(msg,cls){
+  const el=document.getElementById('lobby-status');
+  el.textContent=msg; el.className=cls;
 }
 
-function buildInitState() {
-  return {
-    p1: { hp:100, tx: MY_BASE_X, troops:[], attackTimer:0 },
-    p2: { hp:100, tx: MY_BASE_X, troops:[], attackTimer:0 },
-    tick:0, over:false, winner:null
+function makeInitGs(){
+  return{
+    p1:{hp:100,tx:MY_BASE_X,troops:[],atkTimer:0},
+    p2:{hp:100,tx:MY_BASE_X,troops:[],atkTimer:0},
+    tick:0,over:false,winner:null
   };
 }
 
 // ============================================================
-// ROOM LISTENER
+// FIREBASE LISTENING
 // ============================================================
-let inputSendInterval;
+function startListening(){
+  onValue(roomRef,snap=>{
+    const data=snap.val();
+    if(!data)return;
 
-function listenRoom() {
-  onValue(roomRef, snap => {
-    const data = snap.val();
-    if (!data) return;
-
-    // p2はstateをFirebaseから読んで反映
-    if (myRole === 'p2' && data.state) {
-      applyRemoteState(data.state);
+    // p1: 相手(p2)の入力を受信
+    if(myRole==='p1' && data.input_p2){
+      remoteInput=data.input_p2;
     }
 
-    // p1はp2の入力を受け取る
-    if (myRole === 'p1' && data.input_p2) {
-      remoteInput = data.input_p2;
-    }
-    // p2はp1の入力（不要だがゲームスタート検知）
-    if (myRole === 'p2' && data.status === 'playing' && !gameActive) {
-      startGame();
+    // p2: ゲーム状態をFirebaseから反映
+    if(myRole==='p2' && data.gs){
+      syncGsFromRemote(data.gs);
     }
 
-    if (data.status === 'abandoned' && gameActive) {
+    // p1: statusがplayingになったらゲーム開始
+    if(myRole==='p1' && data.status==='playing' && !gameActive){
+      setStatus('マッチ成立！','ok');
+      enterGame();
+    }
+
+    // 切断検知
+    if(data.status==='abandoned' && gameActive){
       showDisconnect();
     }
   });
 }
 
-let remoteInput = { fwd:false, back:false, attack:false, spawnTroop:null };
-
-function applyRemoteState(s) {
-  // p1の状態をそのまま反映（p2は描画のみ）
-  gs.p1.hp  = s.p1.hp;  gs.p1.tx = s.p1.tx;  gs.p1.troops = s.p1.troops || [];
-  gs.p2.hp  = s.p2.hp;  gs.p2.tx = s.p2.tx;  gs.p2.troops = s.p2.troops || [];
-  gs.tick   = s.tick;
-  gs.over   = s.over;
-  gs.winner = s.winner;
-  if (gs.over && gameActive) { gameActive = false; showResult(gs.winner); }
+function syncGsFromRemote(remote){
+  gs.p1.hp=remote.p1.hp; gs.p1.tx=remote.p1.tx; gs.p1.troops=remote.p1.troops||[];
+  gs.p2.hp=remote.p2.hp; gs.p2.tx=remote.p2.tx; gs.p2.troops=remote.p2.troops||[];
+  gs.tick=remote.tick; gs.over=remote.over; gs.winner=remote.winner;
   updateHUDs();
+  if(gs.over && gameActive){ gameActive=false; showResult(gs.winner); }
 }
 
 // ============================================================
-// GAME START
+// ENTER GAME (両プレイヤー共通)
 // ============================================================
-function startGame() {
-  gameActive = true;
-  document.getElementById('lobby').style.display = 'none';
-  document.getElementById('game-wrap').style.display = 'flex';
+function enterGame(){
+  if(gameActive)return;
+  gameActive=true;
+
+  document.getElementById('lobby').style.display='none';
+  document.getElementById('game-wrap').style.display='flex';
+
+  // 役割バナー表示
+  const banner=document.getElementById('role-banner');
+  banner.style.display='block';
+  banner.innerHTML=myRole==='p1'
+    ? '⚔ あなたは 青陣営 (1P)<br><small style="font-size:14px;color:#aaa">先攻ホスト</small>'
+    : '🗡️ あなたは 赤陣営 (2P)<br><small style="font-size:14px;color:#aaa">後攻クライアント</small>';
+  setTimeout(()=>banner.style.display='none', 2500);
 
   buildTroopButtons();
   setupControls();
 
-  if (myRole === 'p1') {
-    // ホストはゲームループを回す
-    inputSendInterval = setInterval(sendMyInput, 50);
+  // 入力送信インターバル
+  setInterval(sendInput, 50);
+
+  if(myRole==='p1'){
+    // p1だけゲームロジックを回す
+    let lastT=0;
+    function hostLoop(ts){
+      if(!gameActive && !gs.over)return;
+      if(ts-lastT>=33){ lastT=ts; tickGame(); pushGs(); }
+      renderAll();
+      requestAnimationFrame(hostLoop);
+    }
     requestAnimationFrame(hostLoop);
   } else {
-    // クライアントは入力送信 + 描画だけ
-    inputSendInterval = setInterval(sendMyInput, 50);
+    // p2は描画だけ
+    function clientLoop(){
+      if(!gameActive && !gs.over)return;
+      renderAll();
+      requestAnimationFrame(clientLoop);
+    }
     requestAnimationFrame(clientLoop);
   }
 }
 
 // ============================================================
-// HOST LOOP (p1のみ)
+// INPUT SEND
 // ============================================================
-let lastTick = 0;
-function hostLoop(ts) {
-  if (!gameActive) return;
-  if (ts - lastTick >= 33) { // ~30fps物理
-    lastTick = ts;
-    tickGame();
-    pushState();
-  }
-  renderAll();
-  requestAnimationFrame(hostLoop);
-}
-
-function clientLoop() {
-  if (!gameActive && !gs.over) return;
-  renderAll();
-  requestAnimationFrame(clientLoop);
+async function sendInput(){
+  if(!roomRef||!gameActive)return;
+  const key='input_'+myRole;
+  try{
+    await update(roomRef,{[key]:{
+      fwd:myInput.fwd,
+      back:myInput.back,
+      attack:myInput.attack,
+      spawnTroop:myInput.spawnTroop
+    }});
+  }catch(e){}
+  // スポーンは1回送信したらリセット
+  myInput.spawnTroop=null;
 }
 
 // ============================================================
-// GAME TICK (ホストのみ実行)
+// GAME TICK (p1ホストのみ)
 // ============================================================
-let troopIdCounter = 0;
-function tickGame() {
-  if (gs.over) return;
+function tickGame(){
+  if(gs.over)return;
   gs.tick++;
 
-  const me = myRole === 'p1' ? gs.p1 : gs.p2;   // p1視点
-  const en = myRole === 'p1' ? gs.p2 : gs.p1;
+  // 入力処理
+  applyInput(gs.p1, myInput,    gs.p2, 1);
+  applyInput(gs.p2, remoteInput, gs.p1, -1);
 
-  // 自分の入力処理
-  processInput(gs.p1, myInput,    gs.p2);
-  processInput(gs.p2, remoteInput, gs.p1);
+  // 歩兵処理
+  moveTroops(gs.p1, gs.p2, 1);
+  moveTroops(gs.p2, gs.p1, -1);
 
-  // 全歩兵移動・攻撃
-  processTroops(gs.p1, gs.p2, 1);   // p1の歩兵は+X方向
-  processTroops(gs.p2, gs.p1, -1);  // p2の歩兵は-X方向
+  // 侵入ダメージ
+  invasionDmg(gs.p1, gs.p2);
+  invasionDmg(gs.p2, gs.p1);
 
-  // タワー侵入ダメージ（敵陣への侵入）
-  checkTowerInvasion(gs.p1, gs.p2);
-  checkTowerInvasion(gs.p2, gs.p1);
+  // HP下限
+  gs.p1.hp=Math.max(0,gs.p1.hp);
+  gs.p2.hp=Math.max(0,gs.p2.hp);
 
-  // HP下限チェック
-  gs.p1.hp = Math.max(0, gs.p1.hp);
-  gs.p2.hp = Math.max(0, gs.p2.hp);
+  // 死亡した歩兵を除去
+  gs.p1.troops=gs.p1.troops.filter(t=>t.hp>0);
+  gs.p2.troops=gs.p2.troops.filter(t=>t.hp>0);
 
-  // 勝敗判定
-  if (gs.p1.hp <= 0 || gs.p2.hp <= 0) {
-    gs.over = true;
-    gs.winner = gs.p1.hp <= 0 ? 'p2' : 'p1';
+  // 勝敗
+  if(gs.p1.hp<=0||gs.p2.hp<=0){
+    gs.over=true;
+    gs.winner=gs.p1.hp<=0?'p2':'p1';
+    gameActive=false;
+    showResult(gs.winner);
   }
-
-  // 入力リセット（スポーンは1フレームのみ）
-  myInput.spawnTroop = null;
 
   updateHUDs();
-  if (gs.over) { gameActive = false; showResult(gs.winner); }
 }
 
-function processInput(player, input, opponent) {
+function applyInput(player, input, opp, dir){
   // 移動
-  if (input.fwd)  player.tx = Math.min(ENEMY_BASE_X - 20, player.tx + TOWER_SPEED);
-  if (input.back) player.tx = Math.max(MY_BASE_X - 30, player.tx - TOWER_SPEED);
+  if(input.fwd)  player.tx=Math.min(ENEMY_BASE_X-20, player.tx+TOWER_SPEED);
+  if(input.back) player.tx=Math.max(10, player.tx-TOWER_SPEED);
 
-  // タワー攻撃（全レーン対象）
-  if (player.attackTimer > 0) player.attackTimer--;
-  if (input.attack && player.attackTimer === 0) {
-    player.attackTimer = 30;
-    const atkPower = calcTowerAtk(player.hp);
-    // タワー射程内の敵歩兵にダメージ
-    opponent.troops.forEach(t => {
-      const dist = Math.abs(mirrorX(t.x, opponent === gs.p2) - player.tx);
-      if (dist < TOWER_ATK_RANGE) t.hp -= atkPower;
+  // タワー攻撃
+  if(player.atkTimer>0) player.atkTimer--;
+  if(input.attack && player.atkTimer===0){
+    player.atkTimer=28;
+    const power=towerAtk(player.hp);
+    opp.troops.forEach(t=>{
+      // p1のタワーX vs p2歩兵X（p2歩兵はMAP_W側から来る）
+      const tx=dir>0 ? player.tx : MAP_W-player.tx;
+      const ex=dir>0 ? t.x : MAP_W-t.x;
+      if(Math.abs(tx-ex)<TOWER_ATK_RANGE) t.hp-=power;
     });
-    opponent.troops = opponent.troops.filter(t => t.hp > 0);
   }
 
-  // 歩兵召喚（HPコスト）
-  if (input.spawnTroop !== null) {
-    const def = TROOPS[input.spawnTroop];
-    if (def && player.hp > def.cost + 5) { // HP5以上残す
-      player.hp -= def.cost;
+  // 召喚
+  if(input.spawnTroop!==null){
+    const def=TROOPS[input.spawnTroop];
+    if(def && player.hp>def.cost+5){
+      player.hp-=def.cost;
       player.troops.push({
-        id: troopIdCounter++,
-        defId: def.id,
-        x: SELF_SPAWN,
-        hp: def.hp,
-        maxHp: def.hp,
-        atk: def.atk,
-        def: def.def,
-        spd: def.spd,
-        range: def.range,
-        lane: def.lane,
-        atkTimer: 0,
-        alive: true
+        id:troopIdCtr++,
+        defId:def.id,
+        x:SELF_SPAWN,
+        hp:def.hp, maxHp:def.hp,
+        atk:def.atk, def:def.def,
+        spd:def.spd, range:def.range,
+        lane:def.lane,
+        atkTimer:0
       });
     }
   }
 }
 
-function calcTowerAtk(hp) {
-  // HPが低いほど攻撃力UP（最大3倍）
-  const ratio = 1 - (hp / 100);
-  return Math.round(TOWER_ATK_BASE * (1 + ratio * 2));
+function towerAtk(hp){
+  const r=1-(Math.max(0,hp)/100);
+  return Math.round(TOWER_ATK_BASE*(1+r*2));
 }
 
-function processTroops(owner, opponent, dir) {
-  owner.troops.forEach(t => {
-    if (!t.alive) return;
-    // 攻撃タイマー
-    if (t.atkTimer > 0) { t.atkTimer--; return; }
-
-    // 射程内の敵を探す
-    const target = findTarget(t, opponent.troops, dir);
-    if (target) {
-      const dmg = Math.max(1, t.atk - target.def);
-      target.hp -= dmg;
-      if (target.hp <= 0) target.alive = false;
-      t.atkTimer = 20;
+function moveTroops(owner, opp, dir){
+  owner.troops.forEach(t=>{
+    if(t.atkTimer>0){ t.atkTimer--; return; }
+    // 敵歩兵を探す
+    const target=findTarget(t, opp.troops);
+    if(target){
+      const dmg=Math.max(1, t.atk-target.def);
+      target.hp-=dmg;
+      t.atkTimer=22;
     } else {
-      // 敵タワーへの距離チェック
-      const towerDist = dir > 0
-        ? (ENEMY_BASE_X - t.x)
-        : (t.x - (MAP_W - ENEMY_BASE_X));
-      if (towerDist < t.range) {
-        // タワーを攻撃
-        const dmg = Math.max(1, t.atk - 2);
-        opponent.hp -= dmg * 0.1; // タワーへのダメージは小さく
-        t.atkTimer = 20;
+      // 敵タワーへ近づいたらダメージ
+      const distToBase=MAP_W-ENEMY_BASE_X-t.x; // p1基準
+      if(t.x>MAP_W-ENEMY_BASE_X-t.range){
+        opp.hp-=t.atk*0.08;
+        t.atkTimer=22;
       } else {
-        t.x += t.spd * dir;
+        t.x+=t.spd; // 常に+X方向（論理座標）
       }
     }
   });
-  owner.troops = owner.troops.filter(t => t.alive);
 }
 
-function findTarget(troop, enemies, dir) {
-  let best = null, bestDist = troop.range;
-  enemies.forEach(e => {
-    if (!e.alive) return;
-    // レーン攻撃ルール
-    if (!canAttack(troop.lane, e.lane)) return;
-    const dist = Math.abs(e.x - troop.x);
-    if (dist < bestDist) { bestDist = dist; best = e; }
+function findTarget(troop, enemies){
+  let best=null, bestDist=troop.range;
+  enemies.forEach(e=>{
+    if(e.hp<=0)return;
+    if(!canAtk(troop.lane,e.lane))return;
+    const d=Math.abs(e.x-troop.x);
+    if(d<bestDist){ bestDist=d; best=e; }
   });
   return best;
 }
 
-function canAttack(atkLane, defLane) {
-  if (atkLane === 'sky')  return defLane === 'sky' || defLane === 'land';
-  if (atkLane === 'land') return defLane === 'land';
-  if (atkLane === 'sea')  return defLane === 'sea';
+function canAtk(a,d){
+  if(a==='sky')  return d==='sky'||d==='land';
+  if(a==='land') return d==='land';
+  if(a==='sea')  return d==='sea';
   return false;
 }
 
-function checkTowerInvasion(attacker, defender) {
-  // attackerのタワーが敵陣（HIDDEN_END以降）に入ったらdefenderにダメージ
-  const threshold = MAP_W / 2 + 50;
-  if (attacker.tx > threshold) {
-    defender.hp -= INVADE_DMG_RATE;
-  }
-  // 敵歩兵が自タワー周辺に到達したらダメージ
-  attacker.troops.forEach(t => {
-    if (t.x > MAP_W - 120) {
-      defender.hp -= 0.02;
-    }
+function invasionDmg(attacker, defender){
+  // タワーが敵陣に侵入
+  if(attacker.tx>MAP_W/2+50) defender.hp-=INVADE_DMG;
+  // 歩兵が敵タワー近くに到達
+  attacker.troops.forEach(t=>{
+    if(t.x>MAP_W-120) defender.hp-=0.015;
   });
 }
 
 // ============================================================
-// FIREBASE SYNC
+// PUSH TO FIREBASE
 // ============================================================
-async function pushState() {
-  if (!roomRef) return;
-  try {
-    await update(roomRef, {
-      state: {
-        p1: { hp: Math.round(gs.p1.hp*10)/10, tx: gs.p1.tx, troops: sanitizeTroops(gs.p1.troops), attackTimer: gs.p1.attackTimer },
-        p2: { hp: Math.round(gs.p2.hp*10)/10, tx: gs.p2.tx, troops: sanitizeTroops(gs.p2.troops), attackTimer: gs.p2.attackTimer },
-        tick: gs.tick, over: gs.over, winner: gs.winner || null
-      }
-    });
-  } catch(e) {}
-}
-
-function sanitizeTroops(arr) {
-  return arr.slice(0,30).map(t => ({
-    id:t.id, defId:t.defId, x:Math.round(t.x), hp:Math.round(t.hp),
-    maxHp:t.maxHp, lane:t.lane, alive:t.alive
-  }));
-}
-
-async function sendMyInput() {
-  if (!roomRef) return;
-  const key = 'input_' + myRole;
-  try {
-    await update(roomRef, { [key]: {
-      fwd: myInput.fwd,
-      back: myInput.back,
-      attack: myInput.attack,
-      spawnTroop: myInput.spawnTroop
+async function pushGs(){
+  if(!roomRef)return;
+  try{
+    await update(roomRef,{gs:{
+      p1:{hp:+gs.p1.hp.toFixed(1),tx:+gs.p1.tx.toFixed(1),troops:slim(gs.p1.troops),atkTimer:gs.p1.atkTimer},
+      p2:{hp:+gs.p2.hp.toFixed(1),tx:+gs.p2.tx.toFixed(1),troops:slim(gs.p2.troops),atkTimer:gs.p2.atkTimer},
+      tick:gs.tick, over:gs.over, winner:gs.winner||null
     }});
-  } catch(e) {}
+  }catch(e){}
+}
+
+function slim(arr){
+  return arr.slice(0,25).map(t=>({
+    id:t.id,defId:t.defId,x:+t.x.toFixed(1),
+    hp:+t.hp.toFixed(1),maxHp:t.maxHp,lane:t.lane
+  }));
 }
 
 // ============================================================
 // RENDER
 // ============================================================
-function renderAll() {
-  const cw = cvSelf.width, ch = cvSelf.height;
-
-  // 自分視点（下画面）: 自分が右から見る → 自タワーが右、敵方向が左
-  drawView(ctxS, cw, ch, gs, myRole, false);
-  // 敵視点（上画面）: 敵陣営の様子 → 相手が右から見た画面（反転）
-  drawView(ctxE, cw, ch, gs, myRole, true);
+function renderAll(){
+  const cw=cvS.width, ch=cvS.height;
+  // 自陣（下画面）
+  drawView(ctxS, cw, ch, false);
+  // 敵陣（上画面）
+  drawView(ctxE, cw, ch, true);
 }
 
-function drawView(ctx, cw, ch, gs, role, isEnemy) {
+function drawView(ctx, cw, ch, isEnemyView){
   ctx.clearRect(0,0,cw,ch);
 
-  const viewer = isEnemy
-    ? (role === 'p1' ? gs.p2 : gs.p1)
-    : (role === 'p1' ? gs.p1 : gs.p2);
-  const opp = isEnemy
-    ? (role === 'p1' ? gs.p1 : gs.p2)
-    : (role === 'p1' ? gs.p2 : gs.p1);
+  // p1から見た視点
+  // isEnemyView=true → 敵陣を上から見る（左右反転）
+  const myGs  = myRole==='p1' ? gs.p1 : gs.p2;
+  const enGs  = myRole==='p1' ? gs.p2 : gs.p1;
+  const viewer= isEnemyView ? enGs : myGs;
+  const enemy = isEnemyView ? myGs : enGs;
 
-  // 視点方向（自分は右→左に進む、敵は左→右）
-  const dir = isEnemy ? 1 : -1;
-
-  // === 背景 ===
-  // 空ゾーン
-  ctx.fillStyle = '#1a3a5a';
-  ctx.fillRect(0, 0, cw, ch * 0.35);
-  // 陸ゾーン
-  ctx.fillStyle = '#1a3010';
-  ctx.fillRect(0, ch*0.35, cw, ch*0.35);
-  // 海ゾーン
-  ctx.fillStyle = '#0a1e38';
-  ctx.fillRect(0, ch*0.7, cw, ch*0.3);
+  // 背景
+  // 空
+  const skyG=ctx.createLinearGradient(0,0,0,ch*0.33);
+  skyG.addColorStop(0,'#0a1e38'); skyG.addColorStop(1,'#1a3a5a');
+  ctx.fillStyle=skyG; ctx.fillRect(0,0,cw,ch*0.33);
+  // 陸
+  const landG=ctx.createLinearGradient(0,ch*0.33,0,ch*0.66);
+  landG.addColorStop(0,'#1a3010'); landG.addColorStop(1,'#2a4a18');
+  ctx.fillStyle=landG; ctx.fillRect(0,ch*0.33,cw,ch*0.33);
+  // 海
+  const seaG=ctx.createLinearGradient(0,ch*0.66,0,ch);
+  seaG.addColorStop(0,'#0a1e38'); seaG.addColorStop(1,'#061228');
+  ctx.fillStyle=seaG; ctx.fillRect(0,ch*0.66,cw,ch*0.34);
 
   // ゾーンラベル
-  ctx.font = '9px Rajdhani';
-  ctx.fillStyle = '#ffffff22';
-  ctx.fillText('SKY', 4, 12);
-  ctx.fillText('LAND', 4, ch*0.35+14);
-  ctx.fillText('SEA', 4, ch*0.7+14);
+  ctx.font='8px Rajdhani'; ctx.fillStyle='#ffffff18';
+  ctx.fillText('✈ SKY',4,11);
+  ctx.fillText('⚔ LAND',4,ch*0.33+13);
+  ctx.fillText('🌊 SEA',4,ch*0.66+13);
 
-  // === 見えないゾーン（霧）===
-  const fogX = worldToScreen(isEnemy ? HIDDEN_START : HIDDEN_END, cw, isEnemy);
-  const fogW = Math.abs(worldToScreen(HIDDEN_END, cw, isEnemy) - worldToScreen(HIDDEN_START, cw, isEnemy));
-  ctx.fillStyle = 'rgba(0,0,0,0.6)';
-  ctx.fillRect(Math.min(fogX, fogX+fogW), 0, Math.abs(fogW), ch);
-  ctx.fillStyle = '#ffffff11';
-  ctx.font = '10px Rajdhani';
-  ctx.fillText('HIDDEN ZONE', Math.min(fogX,fogX+fogW)+4, ch/2);
+  // 霧（見えないゾーン）
+  const fogL=w2s(HIDDEN_START,cw,isEnemyView);
+  const fogR=w2s(HIDDEN_END,cw,isEnemyView);
+  const fogX=Math.min(fogL,fogR);
+  const fogW=Math.abs(fogR-fogL);
+  const fogGrad=ctx.createLinearGradient(fogX,0,fogX+fogW,0);
+  fogGrad.addColorStop(0,'rgba(0,0,0,0)');
+  fogGrad.addColorStop(0.3,'rgba(0,0,20,0.75)');
+  fogGrad.addColorStop(0.7,'rgba(0,0,20,0.75)');
+  fogGrad.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle=fogGrad;
+  ctx.fillRect(fogX,0,fogW,ch);
+  ctx.fillStyle='#ffffff0a'; ctx.font='9px Rajdhani'; ctx.textAlign='center';
+  ctx.fillText('HIDDEN ZONE',fogX+fogW/2,ch/2);
+  ctx.textAlign='left';
 
-  // === 歩兵描画 ===
-  const allTroops = [
-    ...viewer.troops.map(t=>({...t, side:'self'})),
-    ...opp.troops.map(t=>({...t, side:'enemy'}))
-  ];
+  // 自陣境界線
+  const boundX=w2s(MAP_W/2,cw,isEnemyView);
+  ctx.strokeStyle='#ffffff15'; ctx.lineWidth=1; ctx.setLineDash([4,6]);
+  ctx.beginPath(); ctx.moveTo(boundX,0); ctx.lineTo(boundX,ch); ctx.stroke();
+  ctx.setLineDash([]);
 
-  allTroops.forEach(t => {
-    const def = TROOPS[t.defId];
-    if (!def) return;
-    // 見えないゾーンにいたら描画しない
-    const wx = isEnemy ? (MAP_W - t.x) : t.x;
-    if (wx >= HIDDEN_START && wx <= HIDDEN_END) return;
+  // 歩兵描画（自陣の歩兵=青、敵の歩兵=赤）
+  const myTroops  = isEnemyView ? enGs.troops : myGs.troops;
+  const enTroops  = isEnemyView ? myGs.troops : enGs.troops;
 
-    const sx = worldToScreen(wx, cw, isEnemy);
-    const sy = laneY(t.lane, ch);
-    const col = t.side === 'self' ? '#44aaff' : '#ff6644';
+  // 敵の歩兵（赤）
+  enTroops.forEach(t=>drawTroop(ctx,t,cw,ch,true,isEnemyView));
+  // 自分の歩兵（青）
+  myTroops.forEach(t=>drawTroop(ctx,t,cw,ch,false,isEnemyView));
 
-    // HPバー
-    const hpRatio = t.hp / t.maxHp;
-    ctx.fillStyle = '#000a';
-    ctx.fillRect(sx-14, sy-20, 28, 5);
-    ctx.fillStyle = hpRatio > 0.5 ? '#44ff88' : hpRatio > 0.25 ? '#ffcc00' : '#ff4444';
-    ctx.fillRect(sx-14, sy-20, 28*hpRatio, 5);
-
-    // アイコン
-    ctx.font = `${Math.round(ch*0.12)}px serif`;
-    ctx.textAlign = 'center';
-    ctx.fillText(def.icon, sx, sy+6);
-    ctx.textAlign = 'left';
-  });
-
-  // === タワー（剣士）===
-  const towerX = isEnemy
-    ? worldToScreen(MAP_W - viewer.tx, cw, false)
-    : worldToScreen(viewer.tx, cw, false);
-
-  drawTower(ctx, towerX, ch*0.5, viewer.hp, ch, false);
-
-  // 敵タワー
-  const enemyTowerX = isEnemy
-    ? worldToScreen(MAP_W - opp.tx, cw, false)
-    : worldToScreen(opp.tx, cw, true);
-  drawTower(ctx, enemyTowerX, ch*0.5, opp.hp, ch, true);
+  // タワー描画
+  // 自分のタワー
+  drawTower(ctx, w2s(viewer.tx, cw, isEnemyView), ch, viewer.hp, false);
+  // 敵タワー（反対側）
+  drawTower(ctx, w2s(MAP_W-enemy.tx, cw, isEnemyView), ch, enemy.hp, true);
 }
 
-function worldToScreen(wx, cw, flip) {
-  // MAP_W → cw にマッピング
-  const ratio = cw / MAP_W;
-  const sx = wx * ratio;
-  return flip ? cw - sx : sx;
+function drawTroop(ctx, t, cw, ch, isEnemy, isEnemyView){
+  const def=TROOPS[t.defId]; if(!def)return;
+  // 見えないゾーンは非表示
+  const wx=isEnemyView ? MAP_W-t.x : t.x;
+  if(wx>HIDDEN_START && wx<HIDDEN_END)return;
+
+  const sx=w2s(isEnemyView ? MAP_W-t.x : t.x, cw, isEnemyView);
+  const sy=laneY(t.lane,ch);
+
+  // HPバー
+  const hpR=Math.max(0,t.hp/t.maxHp);
+  ctx.fillStyle='#000a'; ctx.fillRect(sx-13,sy-18,26,4);
+  ctx.fillStyle=hpR>0.5?'#44ff88':hpR>0.25?'#ffcc00':'#ff4444';
+  ctx.fillRect(sx-13,sy-18,26*hpR,4);
+
+  // アイコン
+  ctx.font=`${Math.round(ch*0.11)}px serif`;
+  ctx.textAlign='center';
+  ctx.fillText(def.icon, sx, sy+5);
+  ctx.textAlign='left';
+
+  // 陣営色の枠
+  ctx.strokeStyle=isEnemy?'#ff664488':'#44aaff88';
+  ctx.lineWidth=1.5;
+  const sz=ch*0.07;
+  ctx.beginPath(); ctx.arc(sx,sy,sz,0,Math.PI*2); ctx.stroke();
 }
 
-function laneY(lane, ch) {
-  if (lane === 'sky')  return ch * 0.18;
-  if (lane === 'land') return ch * 0.52;
-  if (lane === 'sea')  return ch * 0.84;
-  return ch * 0.52;
-}
+function drawTower(ctx, sx, ch, hp, isEnemy){
+  const hpR=Math.max(0,hp/100);
+  const col=isEnemy?'#ff6644':'#44aaff';
+  const sz=ch*0.13;
 
-function drawTower(ctx, x, y, hp, ch, isEnemy) {
-  const hpRatio = Math.max(0, hp / 100);
-  const col = isEnemy ? '#ff6644' : '#44aaff';
-  const sz = ch * 0.14;
-
-  // 低HP時に赤く光る
-  if (hpRatio < 0.3 && !isEnemy) {
-    ctx.shadowColor = '#ff4444';
-    ctx.shadowBlur = 12;
+  if(hpR<0.3&&!isEnemy){
+    ctx.shadowColor='#ff4444'; ctx.shadowBlur=10;
   }
-
-  // タワー本体
-  ctx.fillStyle = isEnemy ? '#3a1a10' : '#101e3a';
-  ctx.fillRect(x - sz*0.4, ch*0.3, sz*0.8, ch*0.45);
-
+  // 塔
+  ctx.fillStyle=isEnemy?'#2a100a':'#0a1428';
+  ctx.fillRect(sx-sz*0.4, ch*0.28, sz*0.8, ch*0.44);
   // 旗
-  ctx.fillStyle = col;
-  ctx.beginPath();
-  ctx.moveTo(x, ch*0.18);
-  ctx.lineTo(x + sz*0.5, ch*0.24);
-  ctx.lineTo(x, ch*0.3);
-  ctx.fill();
-
+  ctx.fillStyle=col;
+  ctx.beginPath(); ctx.moveTo(sx,ch*0.18); ctx.lineTo(sx+sz*0.5,ch*0.24); ctx.lineTo(sx,ch*0.29); ctx.fill();
   // 剣士
-  ctx.font = `${Math.round(sz)}px serif`;
-  ctx.textAlign = 'center';
-  ctx.fillText(isEnemy ? '🗡️' : '⚔️', x, ch*0.68);
-  ctx.textAlign = 'left';
-
+  ctx.font=`${Math.round(sz*0.95)}px serif`;
+  ctx.textAlign='center';
+  ctx.fillText(isEnemy?'🗡️':'⚔️', sx, ch*0.67);
+  ctx.textAlign='left';
   // HPゲージ
-  ctx.fillStyle = '#000a';
-  ctx.fillRect(x-20, ch*0.72, 40, 5);
-  ctx.fillStyle = hpRatio>0.5?'#44ff88':hpRatio>0.25?'#ffcc00':'#ff4444';
-  ctx.fillRect(x-20, ch*0.72, 40*hpRatio, 5);
-
-  ctx.shadowBlur = 0;
+  ctx.fillStyle='#000a'; ctx.fillRect(sx-18,ch*0.71,36,5);
+  ctx.fillStyle=hpR>0.5?'#44ff88':hpR>0.25?'#ffcc00':'#ff4444';
+  ctx.fillRect(sx-18,ch*0.71,36*hpR,5);
+  ctx.shadowBlur=0;
 }
 
-function mirrorX(x, isP2) {
-  return isP2 ? MAP_W - x : x;
+function w2s(wx, cw, flip){
+  const s=wx*(cw/MAP_W);
+  return flip ? cw-s : s;
+}
+
+function laneY(lane,ch){
+  if(lane==='sky')  return ch*0.17;
+  if(lane==='land') return ch*0.50;
+  if(lane==='sea')  return ch*0.83;
+  return ch*0.50;
 }
 
 // ============================================================
-// HUD UPDATE
+// HUD
 // ============================================================
-function updateHUDs() {
-  const me = myRole === 'p1' ? gs.p1 : gs.p2;
-  const en = myRole === 'p1' ? gs.p2 : gs.p1;
-  document.getElementById('my-hp-fill').style.width = Math.max(0, me.hp) + '%';
-  document.getElementById('en-hp-fill').style.width = Math.max(0, en.hp) + '%';
-  document.getElementById('my-hp-num').textContent = Math.max(0, Math.floor(me.hp));
-  document.getElementById('en-hp-num').textContent = Math.max(0, Math.floor(en.hp));
-  document.getElementById('hp-display').textContent = Math.max(0, Math.floor(me.hp));
-  updateTroopButtons(me.hp);
-}
-
-function updateTroopButtons(myHp) {
-  TROOPS.forEach((t, i) => {
-    const btn = document.getElementById('troop-btn-'+i);
-    if (!btn) return;
-    if (myHp <= t.cost + 5) btn.classList.add('disabled');
-    else btn.classList.remove('disabled');
+function updateHUDs(){
+  const me=myRole==='p1'?gs.p1:gs.p2;
+  const en=myRole==='p1'?gs.p2:gs.p1;
+  const mhp=Math.max(0,Math.floor(me.hp));
+  const ehp=Math.max(0,Math.floor(en.hp));
+  document.getElementById('my-hp-fill').style.width=mhp+'%';
+  document.getElementById('en-hp-fill').style.width=ehp+'%';
+  document.getElementById('my-hp-num').textContent=mhp;
+  document.getElementById('en-hp-num').textContent=ehp;
+  document.getElementById('hp-display').textContent=mhp;
+  // ボタン有効/無効
+  TROOPS.forEach((t,i)=>{
+    const btn=document.getElementById('tb'+i);
+    if(!btn)return;
+    btn.classList.toggle('disabled', me.hp<=t.cost+5);
   });
 }
 
 // ============================================================
-// TROOP BUTTONS BUILD
+// TROOP BUTTONS
 // ============================================================
-function buildTroopButtons() {
-  const container = document.getElementById('troop-btns');
-  TROOPS.forEach((t, i) => {
-    const btn = document.createElement('div');
-    btn.className = `troop-btn ${t.lane}-btn`;
-    btn.id = 'troop-btn-' + i;
-    btn.innerHTML = `
+function buildTroopButtons(){
+  const c=document.getElementById('troop-btns');
+  TROOPS.forEach((t,i)=>{
+    const btn=document.createElement('div');
+    btn.className=`troop-btn ${t.lane}-btn`;
+    btn.id='tb'+i;
+    btn.innerHTML=`
       <div class="lane-badge ${t.lane}-badge">${t.lane==='sky'?'✈':t.lane==='sea'?'🌊':'⚔'}</div>
       <div class="troop-icon">${t.icon}</div>
       <div class="troop-name">${t.name}</div>
       <div class="troop-cost">-${t.cost}HP</div>
     `;
-    btn.addEventListener('touchstart', e => { e.preventDefault(); spawnTroop(i); }, { passive:false });
-    btn.addEventListener('mousedown', () => spawnTroop(i));
-    container.appendChild(btn);
+    const spawn=()=>{
+      const me=myRole==='p1'?gs.p1:gs.p2;
+      if(me.hp<=t.cost+5){
+        btn.style.filter='brightness(2.2)';
+        setTimeout(()=>btn.style.filter='',300);
+        return;
+      }
+      myInput.spawnTroop=i;
+    };
+    btn.addEventListener('touchstart',e=>{e.preventDefault();spawn();},{passive:false});
+    btn.addEventListener('mousedown',spawn);
+    c.appendChild(btn);
   });
-}
-
-function spawnTroop(i) {
-  const me = myRole === 'p1' ? gs.p1 : gs.p2;
-  const def = TROOPS[i];
-  if (me.hp <= def.cost + 5) {
-    // HPが足りない場合フィードバック
-    const btn = document.getElementById('troop-btn-'+i);
-    if (btn) { btn.style.filter='brightness(2)'; setTimeout(()=>btn.style.filter='',300); }
-    return;
-  }
-  myInput.spawnTroop = i;
 }
 
 // ============================================================
 // CONTROLS
 // ============================================================
-function setupControls() {
-  setupHoldBtn('btn-fwd',  () => myInput.fwd  = true,  () => myInput.fwd  = false);
-  setupHoldBtn('btn-back', () => myInput.back = true,  () => myInput.back = false);
-  setupHoldBtn('btn-sword',() => myInput.attack = true,() => myInput.attack = false);
+function setupControls(){
+  hold('btn-fwd', ()=>myInput.fwd=true,  ()=>myInput.fwd=false);
+  hold('btn-back',()=>myInput.back=true, ()=>myInput.back=false);
+  hold('btn-sword',()=>myInput.attack=true,()=>myInput.attack=false);
 }
 
-function setupHoldBtn(id, onDown, onUp) {
-  const el = document.getElementById(id);
-  if (!el) return;
-  el.addEventListener('touchstart', e => { e.preventDefault(); onDown(); el.classList.add('pressed'); }, { passive:false });
-  el.addEventListener('touchend',   e => { e.preventDefault(); onUp();   el.classList.remove('pressed'); }, { passive:false });
-  el.addEventListener('mousedown',  () => { onDown(); el.classList.add('pressed'); });
-  el.addEventListener('mouseup',    () => { onUp();   el.classList.remove('pressed'); });
-  el.addEventListener('mouseleave', () => { onUp();   el.classList.remove('pressed'); });
+function hold(id,dn,up){
+  const el=document.getElementById(id); if(!el)return;
+  el.addEventListener('touchstart',e=>{e.preventDefault();dn();el.classList.add('pressed');},{passive:false});
+  el.addEventListener('touchend',  e=>{e.preventDefault();up();el.classList.remove('pressed');},{passive:false});
+  el.addEventListener('mousedown', ()=>{dn();el.classList.add('pressed');});
+  el.addEventListener('mouseup',   ()=>{up();el.classList.remove('pressed');});
+  el.addEventListener('mouseleave',()=>{up();el.classList.remove('pressed');});
 }
 
 // ============================================================
 // RESULT / DISCONNECT
 // ============================================================
-function showResult(winner) {
-  clearInterval(inputSendInterval);
-  const isWin = (winner === myRole);
-  const ov = document.getElementById('result-overlay');
-  const title = document.getElementById('result-title');
-  title.textContent = isWin ? 'VICTORY' : 'DEFEAT';
-  title.style.color = isWin ? '#ffd700' : '#ff4444';
-  title.style.textShadow = isWin
-    ? '0 0 30px #ffd70088'
-    : '0 0 30px #ff444488';
-  ov.style.display = 'flex';
-  if (roomRef) update(roomRef, { status: 'finished' }).catch(()=>{});
+function showResult(winner){
+  const isWin=winner===myRole;
+  const ov=document.getElementById('result-overlay');
+  const t=document.getElementById('result-title');
+  t.textContent=isWin?'VICTORY':'DEFEAT';
+  t.style.color=isWin?'#ffd700':'#ff4444';
+  t.style.textShadow=isWin?'0 0 30px #ffd70088':'0 0 30px #ff444488';
+  ov.style.display='flex';
+  if(roomRef) update(roomRef,{status:'finished'}).catch(()=>{});
 }
 
-function showDisconnect() {
-  clearInterval(inputSendInterval);
-  gameActive = false;
-  document.getElementById('disconnect-msg').style.display = 'flex';
+function showDisconnect(){
+  gameActive=false;
+  document.getElementById('disconnect-msg').style.display='flex';
 }
 </script>
 </body>
