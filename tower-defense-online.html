@@ -6,37 +6,31 @@
 <title>BLADE FRONTIER</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Rajdhani:wght@400;600;700&display=swap');
-:root{--gold:#ffd700;--blue:#44aaff;--red:#ff6644;--green:#44ff88;--panel:#0a0c14;--border:#1e2a3a;}
+:root{--gold:#ffd700;--blue:#44aaff;--red:#ff6644;--green:#44ff88;}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 body{background:#050810;font-family:'Rajdhani',sans-serif;color:#fff;height:100vh;overflow:hidden;display:flex;flex-direction:column;align-items:center;touch-action:none;user-select:none;}
-
-/* ── LOBBY ── */
 #lobby{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;gap:18px;width:min(360px,94vw);}
 .logo{font-family:'Cinzel',serif;font-size:clamp(28px,8vw,48px);font-weight:900;background:linear-gradient(135deg,#b8860b,#ffd700,#fff8dc,#ffd700,#b8860b);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:5px;text-align:center;filter:drop-shadow(0 0 12px #ffd70066);}
 .logo-sub{font-size:10px;color:#445;letter-spacing:5px;text-align:center;margin-top:-10px;}
 .card{background:linear-gradient(135deg,#0d1422,#0a0f1c);border:1px solid #2a3a50;border-radius:12px;padding:20px;width:100%;box-shadow:0 4px 24px #00000088,inset 0 1px 0 #ffffff08;}
-.card-title{font-size:10px;color:#445;letter-spacing:4px;margin-bottom:12px;font-weight:700;}
+.card-title{font-size:10px;color:#445;letter-spacing:4px;margin-bottom:12px;}
 .row{display:flex;gap:8px;}
 input[type=text]{flex:1;background:#060a14;border:1.5px solid #2a3a50;border-radius:8px;color:#fff;font-family:'Cinzel',serif;font-size:15px;letter-spacing:3px;padding:11px 14px;outline:none;text-transform:uppercase;transition:border-color 0.2s,box-shadow 0.2s;}
 input[type=text]:focus{border-color:var(--gold);box-shadow:0 0 12px #ffd70033;}
 input[type=text]::placeholder{color:#223;font-size:11px;}
-.btn-gold{background:linear-gradient(135deg,#7a5500,#ffd700,#fff8aa,#ffd700,#7a5500);color:#1a0e00;border:none;border-radius:8px;font-family:'Cinzel',serif;font-weight:900;font-size:13px;letter-spacing:1px;padding:11px 18px;cursor:pointer;transition:transform 0.1s,filter 0.1s;white-space:nowrap;box-shadow:0 2px 12px #ffd70044;}
+.btn-gold{background:linear-gradient(135deg,#7a5500,#ffd700,#fff8aa,#ffd700,#7a5500);color:#1a0e00;border:none;border-radius:8px;font-family:'Cinzel',serif;font-weight:900;font-size:13px;padding:11px 18px;cursor:pointer;transition:transform 0.1s,filter 0.1s;white-space:nowrap;box-shadow:0 2px 12px #ffd70044;}
 .btn-gold:active{transform:scale(0.93);filter:brightness(0.8);}
 .btn-gold:disabled{background:#222;color:#444;cursor:default;box-shadow:none;}
 #lobby-status{font-size:13px;letter-spacing:2px;text-align:center;color:var(--gold);min-height:20px;}
-#lobby-status.ok{color:#44ff88;}
-#lobby-status.err{color:#ff4444;}
+#lobby-status.ok{color:#44ff88;} #lobby-status.err{color:#ff4444;}
 #lobby-status.wait{animation:pulse 1.4s infinite;}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
 .hint{font-size:11px;color:#334;text-align:center;line-height:1.8;}
-
-/* ── GAME ── */
 #game-wrap{display:none;flex-direction:column;width:100vw;height:100vh;overflow:hidden;}
 #view-enemy{flex:1;position:relative;overflow:hidden;}
 .view-divider{height:3px;background:linear-gradient(90deg,transparent,#ffd700,transparent);flex-shrink:0;}
 #view-self{flex:1;position:relative;overflow:hidden;}
 canvas{display:block;width:100%;height:100%;}
-
 .hpbar-wrap{position:absolute;left:6px;right:6px;display:flex;align-items:center;gap:6px;pointer-events:none;z-index:10;}
 .hp-label{font-family:'Cinzel',serif;font-size:9px;color:var(--gold);white-space:nowrap;text-shadow:0 0 6px #ffd70066;}
 .hp-bg{flex:1;height:8px;background:#0a0a0a;border-radius:4px;overflow:hidden;border:1px solid #1a1a2a;box-shadow:inset 0 1px 3px #00000088;}
@@ -44,37 +38,30 @@ canvas{display:block;width:100%;height:100%;}
 #my-hp-fill{background:linear-gradient(90deg,#00aa44,#44ff88,#aaffcc);}
 #en-hp-fill{background:linear-gradient(90deg,#aa2200,#ff6644,#ffaa88);}
 .hp-num{font-family:'Cinzel',serif;font-size:10px;font-weight:700;color:#ccc;min-width:32px;text-align:right;}
-.view-label{position:absolute;top:8px;left:50%;transform:translateX(-50%);font-size:8px;color:#334;letter-spacing:4px;pointer-events:none;text-shadow:none;}
-
-/* ── CTRL ── */
+.view-label{position:absolute;top:8px;left:50%;transform:translateX(-50%);font-size:8px;color:#334;letter-spacing:4px;pointer-events:none;}
 #ctrl-area{height:152px;background:linear-gradient(180deg,#060a14,#040810);border-top:1px solid #1e2a3a;display:flex;flex-direction:column;padding:6px 8px 5px;gap:5px;flex-shrink:0;}
 #tower-ctrl{display:flex;gap:6px;align-items:center;}
 .btn-move{background:linear-gradient(135deg,#0f1828,#162238);border:1.5px solid #2a3a5a;border-radius:8px;color:#88aacc;font-size:20px;width:44px;height:38px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.08s,transform 0.06s;box-shadow:0 2px 8px #00000066;}
-.btn-move:active,.btn-move.pressed{background:#1e3050;transform:scale(0.9);box-shadow:none;}
-.btn-attack{background:linear-gradient(135deg,#3a0808,#8a1a1a,#3a0808);border:1.5px solid #cc3333;border-radius:8px;color:#ffcccc;font-size:12px;font-family:'Cinzel',serif;font-weight:700;letter-spacing:1px;padding:0 12px;height:38px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform 0.06s,filter 0.08s;flex:1;box-shadow:0 2px 12px #ff000033;}
+.btn-move:active,.btn-move.pressed{background:#1e3050;transform:scale(0.9);}
+.btn-attack{background:linear-gradient(135deg,#3a0808,#8a1a1a,#3a0808);border:1.5px solid #cc3333;border-radius:8px;color:#ffcccc;font-size:12px;font-family:'Cinzel',serif;font-weight:700;padding:0 12px;height:38px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform 0.06s,filter 0.08s;flex:1;box-shadow:0 2px 12px #ff000033;}
 .btn-attack:active{transform:scale(0.93);filter:brightness(1.4);box-shadow:0 0 16px #ff000066;}
 #my-hp-ctrl{font-size:10px;color:#446;flex-shrink:0;}
 #my-hp-ctrl span{color:#44ff88;font-weight:700;font-size:14px;text-shadow:0 0 8px #44ff8866;}
 #troop-btns{display:flex;gap:4px;overflow-x:auto;padding-bottom:2px;flex:1;align-items:flex-start;}
 #troop-btns::-webkit-scrollbar{height:3px;}
 #troop-btns::-webkit-scrollbar-thumb{background:#2a3a50;border-radius:2px;}
-.troop-btn{flex-shrink:0;width:54px;border-radius:8px;cursor:pointer;display:flex;flex-direction:column;align-items:center;padding:4px 2px 3px;gap:1px;transition:transform 0.07s,filter 0.07s,box-shadow 0.07s;position:relative;border:1.5px solid transparent;}
+.troop-btn{flex-shrink:0;width:54px;border-radius:8px;cursor:pointer;display:flex;flex-direction:column;align-items:center;padding:4px 2px 3px;gap:1px;transition:transform 0.07s,filter 0.07s;position:relative;border:1.5px solid transparent;}
 .troop-btn:active{transform:scale(0.89);filter:brightness(1.3);}
 .troop-btn.disabled{opacity:0.3;pointer-events:none;}
-.troop-btn.sky-btn{border-color:#4ab8e8;background:linear-gradient(135deg,#060e1a,#0c1e2e);box-shadow:0 0 8px #4ab8e822;}
-.troop-btn.land-btn{border-color:#5a9e30;background:linear-gradient(135deg,#060e06,#0c1e0c);box-shadow:0 0 8px #5a9e3022;}
-.troop-btn.sea-btn{border-color:#2a7ab8;background:linear-gradient(135deg,#06080e,#0c1020);box-shadow:0 0 8px #2a7ab822;}
+.sky-btn{border-color:#4ab8e8;background:linear-gradient(135deg,#060e1a,#0c1e2e);box-shadow:0 0 8px #4ab8e822;}
+.land-btn{border-color:#5a9e30;background:linear-gradient(135deg,#060e06,#0c1e0c);box-shadow:0 0 8px #5a9e3022;}
+.sea-btn{border-color:#2a7ab8;background:linear-gradient(135deg,#06080e,#0c1020);box-shadow:0 0 8px #2a7ab822;}
 .troop-icon{font-size:20px;line-height:1.1;}
-.troop-name{font-size:7px;color:#778;text-align:center;line-height:1.2;}
+.troop-name{font-size:7px;color:#778;text-align:center;}
 .troop-cost{font-size:9px;font-weight:700;}
-.sky-btn .troop-cost{color:#4ab8e8;}
-.land-btn .troop-cost{color:#7acc44;}
-.sea-btn .troop-cost{color:#44aaff;}
+.sky-btn .troop-cost{color:#4ab8e8;} .land-btn .troop-cost{color:#7acc44;} .sea-btn .troop-cost{color:#44aaff;}
 .lane-badge{position:absolute;top:2px;right:2px;font-size:7px;width:12px;height:12px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
-.sky-badge{background:#4ab8e833;color:#4ab8e8;}
-.land-badge{background:#5a9e3033;color:#7acc44;}
-.sea-badge{background:#2a7ab833;color:#44aaff;}
-
+.sky-badge{background:#4ab8e833;color:#4ab8e8;} .land-badge{background:#5a9e3033;color:#7acc44;} .sea-badge{background:#2a7ab833;color:#44aaff;}
 #result-overlay{display:none;position:fixed;inset:0;background:#000000dd;z-index:200;align-items:center;justify-content:center;flex-direction:column;gap:18px;backdrop-filter:blur(8px);}
 #result-overlay h1{font-family:'Cinzel',serif;font-size:clamp(32px,9vw,56px);letter-spacing:6px;}
 #disconnect-msg{display:none;position:fixed;inset:0;background:#000000dd;z-index:200;align-items:center;justify-content:center;flex-direction:column;gap:14px;}
@@ -84,12 +71,8 @@ canvas{display:block;width:100%;height:100%;}
 </style>
 </head>
 <body>
-
 <div id="lobby">
-  <div>
-    <div class="logo">BLADE FRONTIER</div>
-    <div class="logo-sub">ONLINE TOWER DEFENSE</div>
-  </div>
+  <div><div class="logo">BLADE FRONTIER</div><div class="logo-sub">ONLINE TOWER DEFENSE</div></div>
   <div class="card">
     <div class="card-title">⚔ あいことばでマッチング</div>
     <div class="row">
@@ -98,9 +81,8 @@ canvas{display:block;width:100%;height:100%;}
     </div>
     <div style="margin-top:10px"><div id="lobby-status" class="ok">あいことばを入力してください</div></div>
   </div>
-  <div class="hint">同じあいことばを入力した2人がマッチ<br>先に入力 → 青陣営 / 後から入力 → 赤陣営</div>
+  <div class="hint">同じあいことばを入力した2人がマッチ<br>先に入力 → 青陣営 / 後から → 赤陣営</div>
 </div>
-
 <div id="game-wrap">
   <div id="view-enemy">
     <canvas id="canvas-enemy"></canvas>
@@ -131,7 +113,6 @@ canvas{display:block;width:100%;height:100%;}
     <div id="troop-btns"></div>
   </div>
 </div>
-
 <div id="result-overlay">
   <h1 id="result-title">WIN</h1>
   <button class="btn-gold" onclick="location.reload()">もう一度</button>
@@ -159,77 +140,105 @@ const firebaseConfig = {
 const fbApp = initializeApp(firebaseConfig);
 const db = getDatabase(fbApp);
 
-// ============================================================
-// TROOP DEFINITIONS  ※コストは元の値、HPは300スケール
-// ============================================================
-const TROOPS = [
-  {id:0, name:'ハヤブサ',    icon:'🦅', lane:'sky',  cost:8,  hp:50,  atk:6,  def:1, spd:6.6, range:55},
-  {id:1, name:'ドラゴン',    icon:'🐉', lane:'sky',  cost:20, hp:150, atk:18, def:4, spd:3.0, range:75},
-  {id:2, name:'騎士',        icon:'🛡️', lane:'land', cost:10, hp:100, atk:8,  def:6, spd:2.4, range:38},
-  {id:3, name:'弓兵',        icon:'🏹', lane:'land', cost:7,  hp:40,  atk:12, def:1, spd:3.6, range:85},
-  {id:4, name:'オーガ',      icon:'👹', lane:'land', cost:18, hp:200, atk:22, def:3, spd:1.8, range:32},
-  {id:5, name:'忍者',        icon:'🥷', lane:'land', cost:9,  hp:60,  atk:10, def:2, spd:7.5, range:28},
-  {id:6, name:'クラーケン',  icon:'🐙', lane:'sea',  cost:16, hp:160, atk:16, def:5, spd:2.1, range:48},
-  {id:7, name:'人魚',        icon:'🧜', lane:'sea',  cost:8,  hp:70,  atk:9,  def:2, spd:5.4, range:52},
-  {id:8, name:'海竜',        icon:'🐲', lane:'sea',  cost:22, hp:220, atk:25, def:6, spd:1.5, range:65},
-  {id:9, name:'フェニックス',icon:'🔥', lane:'sky',  cost:15, hp:100, atk:14, def:3, spd:4.5, range:70},
+// ── AUDIO ──────────────────────────────────────────────────
+let audioCtx = null;
+function getAudio(){ if(!audioCtx) audioCtx=new(window.AudioContext||window.webkitAudioContext)(); return audioCtx; }
+
+function playTone(freq,type,dur,vol=0.18,detune=0){
+  try{
+    const ac=getAudio();
+    const o=ac.createOscillator(), g=ac.createGain();
+    o.connect(g); g.connect(ac.destination);
+    o.type=type; o.frequency.value=freq; o.detune.value=detune;
+    g.gain.setValueAtTime(vol,ac.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001,ac.currentTime+dur);
+    o.start(); o.stop(ac.currentTime+dur);
+  }catch(e){}
+}
+
+function playAttackSfx(lane){
+  if(lane==='sky'){playTone(880,'sawtooth',0.08,0.2);playTone(660,'sine',0.12,0.1,100);}
+  else if(lane==='land'){playTone(220,'square',0.06,0.25);playTone(180,'sawtooth',0.08,0.15);}
+  else{playTone(110,'sine',0.15,0.2);playTone(90,'sawtooth',0.1,0.1);}
+}
+function playTowerSfx(){
+  playTone(440,'sawtooth',0.05,0.3);
+  playTone(330,'square',0.08,0.1);
+  setTimeout(()=>playTone(550,'sine',0.06,0.2),50);
+}
+function playSpawnSfx(){playTone(330,'sine',0.05,0.15);playTone(440,'sine',0.04,0.1);}
+function playHitSfx(){playTone(150,'sawtooth',0.04,0.2);playTone(80,'square',0.06,0.15);}
+function playVictorySfx(){
+  [523,659,784,1047].forEach((f,i)=>setTimeout(()=>playTone(f,'sine',0.3,0.22),i*120));
+}
+function playDefeatSfx(){
+  [392,330,262,196].forEach((f,i)=>setTimeout(()=>playTone(f,'sawtooth',0.3,0.18),i*140));
+}
+
+// BGM
+let bgmRunning=false;
+function startBgm(){
+  if(bgmRunning)return; bgmRunning=true;
+  const notes=[196,220,247,262,294,330,392,440];
+  let i=0;
+  function step(){
+    if(!bgmRunning)return;
+    playTone(notes[i%notes.length],'sine',0.4,0.06);
+    if(i%4===0) playTone(notes[(i+4)%notes.length]*0.5,'sine',0.6,0.04);
+    i++;
+    setTimeout(step, 320+Math.random()*80);
+  }
+  step();
+}
+
+// ── TROOP DEFS ──────────────────────────────────────────────
+const TROOPS=[
+  {id:0,name:'ハヤブサ',icon:'🦅',lane:'sky', cost:8, hp:50, atk:6, def:1,spd:6.6,range:55,flip:true},
+  {id:1,name:'ドラゴン',icon:'🐉',lane:'sky', cost:20,hp:150,atk:18,def:4,spd:3.0,range:75,flip:false},
+  {id:2,name:'騎士',   icon:'🛡️',lane:'land',cost:10,hp:100,atk:8, def:6,spd:2.4,range:38,flip:true},
+  {id:3,name:'弓兵',   icon:'🏹',lane:'land',cost:7, hp:40, atk:12,def:1,spd:3.6,range:85,flip:true},
+  {id:4,name:'オーガ', icon:'👹',lane:'land',cost:18,hp:200,atk:22,def:3,spd:1.8,range:32,flip:false},
+  {id:5,name:'忍者',   icon:'🥷',lane:'land',cost:9, hp:60, atk:10,def:2,spd:7.5,range:28,flip:true},
+  {id:6,name:'クラーケン',icon:'🐙',lane:'sea',cost:16,hp:160,atk:16,def:5,spd:2.1,range:48,flip:false},
+  {id:7,name:'人魚',   icon:'🧜',lane:'sea',cost:8, hp:70, atk:9, def:2,spd:5.4,range:52,flip:true},
+  {id:8,name:'海竜',   icon:'🐲',lane:'sea',cost:22,hp:220,atk:25,def:6,spd:1.5,range:65,flip:false},
+  {id:9,name:'フェニックス',icon:'🔥',lane:'sky',cost:15,hp:100,atk:14,def:3,spd:4.5,range:70,flip:false},
 ];
 
-// ============================================================
-// CONSTANTS
-// ============================================================
-const MAP_W      = 800;
-const SIDE_W     = 400;   // 自陣幅（0〜400）
-const SPAWN_X    = 55;
-const MY_TWR_X0  = 28;
-const EN_TWR_X0  = MAP_W - 28;
-const TWR_SPD    = 5.4;   // タワー移動速度 (元の3倍)
-const TWR_ATK    = 22;
-const TWR_RANGE  = 50;
-const MAX_HP     = 300;
-const INVADE_DMG = 0.025;
+// ── CONSTANTS ────────────────────────────────────────────────
+const MAP_W=1600, SIDE_W=800;
+const SPAWN_X=55, MY_TWR_X0=30, EN_TWR_X0=MAP_W-30;
+const TWR_SPD=8.0, TWR_ATK=22, TWR_RANGE=55, MAX_HP=300, INVADE_DMG=0.025;
 
-// ============================================================
-// STATE
-// ============================================================
-let myRole=null, roomRef=null, gameActive=false;
-let troopIdCtr=0;
+// ── STATE ───────────────────────────────────────────────────
+let myRole=null,roomRef=null,gameActive=false,troopIdCtr=0,effectIdCtr=0;
 
 const gs={
-  p1:{hp:MAX_HP, tx:MY_TWR_X0, troops:[], atkTimer:0},
-  p2:{hp:MAX_HP, tx:MY_TWR_X0, troops:[], atkTimer:0},
-  // エフェクトはFirebase経由で同期（両プレイヤーで同じ表示）
-  effects:[], // [{id,type,owner,x,lane,life,maxLife}]
-  tick:0, over:false, winner:null
+  p1:{hp:MAX_HP,tx:MY_TWR_X0,troops:[],atkTimer:0},
+  p2:{hp:MAX_HP,tx:MY_TWR_X0,troops:[],atkTimer:0},
+  effects:[],tick:0,over:false,winner:null
 };
+const myInput={fwd:false,back:false,attack:false,spawnTroop:null};
+let remoteInput={fwd:false,back:false,attack:false,spawnTroop:null};
 
-const myInput={fwd:false, back:false, attack:false, spawnTroop:null};
-let remoteInput={fwd:false, back:false, attack:false, spawnTroop:null};
-let effectIdCtr=0;
-
-// Canvas
 const cvE=document.getElementById('canvas-enemy');
 const cvS=document.getElementById('canvas-self');
-const ctxE=cvE.getContext('2d');
-const ctxS=cvS.getContext('2d');
+const ctxE=cvE.getContext('2d'),ctxS=cvS.getContext('2d');
+let tick=0; // local anim tick
 
 function resizeCvs(){
-  const w=window.innerWidth;
-  const h=Math.floor((window.innerHeight-155)/2);
+  const w=window.innerWidth,h=Math.floor((window.innerHeight-155)/2);
   [cvE,cvS].forEach(c=>{c.width=w;c.height=h;});
 }
-resizeCvs();
-window.addEventListener('resize',resizeCvs);
+resizeCvs(); window.addEventListener('resize',resizeCvs);
 
-// ============================================================
-// LOBBY
-// ============================================================
+// ── LOBBY ────────────────────────────────────────────────────
 document.getElementById('btn-join').addEventListener('click',async()=>{
   const word=document.getElementById('room-input').value.trim().toUpperCase();
   if(!word)return;
   document.getElementById('btn-join').disabled=true;
   setStatus('接続中...','');
-  roomRef=ref(db,'bf3_rooms/'+word);
+  roomRef=ref(db,'bf4_rooms/'+word);
   let snap;
   try{snap=await get(roomRef);}
   catch(e){setStatus('接続エラー','err');document.getElementById('btn-join').disabled=false;return;}
@@ -246,27 +255,16 @@ document.getElementById('btn-join').addEventListener('click',async()=>{
     myRole='p2';
     await update(roomRef,{status:'playing'});
     setStatus('マッチ成立！','ok');
-    startListening();
-    enterGame();
+    startListening(); enterGame();
   } else {
     setStatus('その部屋は使用中です','err');
     document.getElementById('btn-join').disabled=false;
   }
 });
+function setStatus(m,c){const e=document.getElementById('lobby-status');e.textContent=m;e.className=c;}
+function makeInitGs(){return{p1:{hp:MAX_HP,tx:MY_TWR_X0,troops:[],atkTimer:0},p2:{hp:MAX_HP,tx:MY_TWR_X0,troops:[],atkTimer:0},effects:[],tick:0,over:false,winner:null};}
 
-function setStatus(msg,cls){const el=document.getElementById('lobby-status');el.textContent=msg;el.className=cls;}
-
-function makeInitGs(){
-  return{
-    p1:{hp:MAX_HP,tx:MY_TWR_X0,troops:[],atkTimer:0},
-    p2:{hp:MAX_HP,tx:MY_TWR_X0,troops:[],atkTimer:0},
-    effects:[],tick:0,over:false,winner:null
-  };
-}
-
-// ============================================================
-// LISTENING
-// ============================================================
+// ── LISTENING ────────────────────────────────────────────────
 function startListening(){
   onValue(roomRef,snap=>{
     const data=snap.val(); if(!data)return;
@@ -276,190 +274,160 @@ function startListening(){
     if(data.status==='abandoned'&&gameActive) showDisconnect();
   });
 }
-
 function syncGs(r){
-  gs.p1.hp=r.p1.hp; gs.p1.tx=r.p1.tx; gs.p1.troops=r.p1.troops||[];
-  gs.p2.hp=r.p2.hp; gs.p2.tx=r.p2.tx; gs.p2.troops=r.p2.troops||[];
-  gs.effects=r.effects||[];
-  gs.tick=r.tick; gs.over=r.over; gs.winner=r.winner;
+  gs.p1.hp=r.p1.hp;gs.p1.tx=r.p1.tx;gs.p1.troops=r.p1.troops||[];
+  gs.p2.hp=r.p2.hp;gs.p2.tx=r.p2.tx;gs.p2.troops=r.p2.troops||[];
+  gs.effects=r.effects||[];gs.tick=r.tick;gs.over=r.over;gs.winner=r.winner;
   updateHUDs();
   if(gs.over&&gameActive){gameActive=false;showResult(gs.winner);}
 }
 
-// ============================================================
-// ENTER GAME
-// ============================================================
+// ── ENTER GAME ───────────────────────────────────────────────
 function enterGame(){
-  if(gameActive)return;
-  gameActive=true;
+  if(gameActive)return; gameActive=true;
   document.getElementById('lobby').style.display='none';
   document.getElementById('game-wrap').style.display='flex';
   const banner=document.getElementById('role-banner');
   banner.style.display='block';
   banner.innerHTML=myRole==='p1'?'⚔ あなたは 青陣営 (1P)':'🗡️ あなたは 赤陣営 (2P)';
   setTimeout(()=>banner.style.display='none',2600);
-  buildTroopButtons();
-  setupControls();
+  buildTroopButtons(); setupControls();
   setInterval(sendInput,50);
+  startBgm();
   if(myRole==='p1'){
     let lastT=0;
-    function hostLoop(ts){
+    (function hostLoop(ts){
       if(!gameActive&&!gs.over)return;
       if(ts-lastT>=33){lastT=ts;tickGame();pushGs();}
-      renderAll();
+      tick++; renderAll();
       requestAnimationFrame(hostLoop);
-    }
-    requestAnimationFrame(hostLoop);
+    })(0);
   } else {
-    function clientLoop(){
+    (function clientLoop(){
       if(!gameActive&&!gs.over)return;
-      renderAll();
+      tick++; renderAll();
       requestAnimationFrame(clientLoop);
-    }
-    requestAnimationFrame(clientLoop);
+    })();
   }
 }
 
-// ============================================================
-// INPUT SEND
-// ============================================================
+// ── INPUT SEND ───────────────────────────────────────────────
 async function sendInput(){
   if(!roomRef||!gameActive)return;
-  try{await update(roomRef,{['input_'+myRole]:{fwd:myInput.fwd,back:myInput.back,attack:myInput.attack,spawnTroop:myInput.spawnTroop}});}
-  catch(e){}
+  try{await update(roomRef,{['input_'+myRole]:{fwd:myInput.fwd,back:myInput.back,attack:myInput.attack,spawnTroop:myInput.spawnTroop}});}catch(e){}
   myInput.spawnTroop=null;
 }
 
-// ============================================================
-// GAME TICK (p1 only)
-// ============================================================
+// ── GAME TICK ────────────────────────────────────────────────
 function tickGame(){
   if(gs.over)return;
   gs.tick++;
-
-  // エフェクトのライフ更新
   gs.effects=gs.effects.filter(e=>e.life>0);
   gs.effects.forEach(e=>e.life--);
-
-  applyInput(gs.p1,myInput,   gs.p2, 1);
+  applyInput(gs.p1,myInput,gs.p2,1);
   applyInput(gs.p2,remoteInput,gs.p1,-1);
-  moveTroops(gs.p1,gs.p2, 1);
+  moveTroops(gs.p1,gs.p2,1);
   moveTroops(gs.p2,gs.p1,-1);
   invasionDmg(gs.p1,gs.p2);
   invasionDmg(gs.p2,gs.p1);
-
   gs.p1.hp=Math.max(0,gs.p1.hp);
   gs.p2.hp=Math.max(0,gs.p2.hp);
   gs.p1.troops=gs.p1.troops.filter(t=>t.hp>0);
   gs.p2.troops=gs.p2.troops.filter(t=>t.hp>0);
-
   if(gs.p1.hp<=0||gs.p2.hp<=0){
-    gs.over=true; gs.winner=gs.p1.hp<=0?'p2':'p1';
-    gameActive=false; showResult(gs.winner);
+    gs.over=true;gs.winner=gs.p1.hp<=0?'p2':'p1';
+    gameActive=false;showResult(gs.winner);
   }
   updateHUDs();
 }
 
 function applyInput(player,input,opp,dir){
-  // タワー移動 (敵陣も含め全マップ移動可)
-  if(input.fwd)  player.tx=Math.min(MAP_W-20, player.tx+TWR_SPD);
-  if(input.back) player.tx=Math.max(20,        player.tx-TWR_SPD);
+  // タワー移動 - 全マップ移動可能
+  if(input.fwd)  player.tx=Math.min(MAP_W-25,player.tx+TWR_SPD);
+  if(input.back) player.tx=Math.max(25,player.tx-TWR_SPD);
 
   if(player.atkTimer>0) player.atkTimer--;
   if(input.attack&&player.atkTimer===0){
     player.atkTimer=28;
     const power=calcTowerAtk(player.hp);
     const owner=player===gs.p1?'p1':'p2';
-    // エフェクト登録（タワー攻撃）
-    gs.effects.push({id:effectIdCtr++,type:'tower',owner,
-      x:player.tx, range:TWR_RANGE, life:16, maxLife:16});
-    // ダメージ
+    // 論理X: p1はtx, p2はMAP_W-tx として比較
+    const myLogicX=player.tx;
+    gs.effects.push({id:effectIdCtr++,type:'tower',owner,x:player.tx,range:TWR_RANGE,life:18,maxLife:18});
+    playTowerSfx();
     opp.troops.forEach(t=>{
+      // p2の歩兵はMAP_W-t.x が p1論理座標
       const ex=dir>0?t.x:MAP_W-t.x;
-      if(Math.abs(ex-player.tx)<TWR_RANGE) t.hp-=power;
+      if(Math.abs(ex-myLogicX)<TWR_RANGE){t.hp-=power;playHitSfx();}
     });
     opp.troops=opp.troops.filter(t=>t.hp>0);
   }
-
   if(input.spawnTroop!==null){
     const def=TROOPS[input.spawnTroop];
     if(def&&player.hp>def.cost+8){
       player.hp-=def.cost;
-      player.troops.push({
-        id:troopIdCtr++, defId:def.id,
-        x:SPAWN_X, hp:def.hp, maxHp:def.hp,
-        atk:def.atk, def:def.def,
-        spd:def.spd, range:def.range,
-        lane:def.lane, atkTimer:0, attacking:false
-      });
+      player.troops.push({id:troopIdCtr++,defId:def.id,x:SPAWN_X,hp:def.hp,maxHp:def.hp,atk:def.atk,def:def.def,spd:def.spd,range:def.range,lane:def.lane,atkTimer:0,attacking:false,walkPhase:Math.random()*Math.PI*2});
+      playSpawnSfx();
     }
   }
 }
 
-function calcTowerAtk(hp){
-  const r=1-(Math.max(0,hp)/MAX_HP);
-  return Math.round(TWR_ATK*(1+r*2));
-}
+function calcTowerAtk(hp){return Math.round(TWR_ATK*(1+(1-hp/MAX_HP)*2));}
 
 function moveTroops(owner,opp,dir){
   owner.troops.forEach(t=>{
     if(t.atkTimer>0){t.atkTimer--;t.attacking=true;return;}
     t.attacking=false;
-    const target=findTarget(t,opp.troops);
+    const target=findTarget(t,opp.troops,dir);
     if(target){
-      // 攻撃エフェクト登録
-      gs.effects.push({
-        id:effectIdCtr++, type:'troop',
-        owner:owner===gs.p1?'p1':'p2',
-        x:t.x, tx:target.x, lane:t.lane,
-        life:12, maxLife:12
-      });
       const dmg=Math.max(1,t.atk-target.def);
       target.hp-=dmg;
-      t.atkTimer=20; t.attacking=true;
+      const owner_str=owner===gs.p1?'p1':'p2';
+      gs.effects.push({id:effectIdCtr++,type:'troop',owner:owner_str,defId:t.defId,
+        x:t.x,tx:target.x,lane:t.lane,life:16,maxLife:16});
+      playAttackSfx(t.lane); playHitSfx();
+      t.atkTimer=22;t.attacking=true;
     } else {
-      // 敵タワーへの攻撃判定
-      const towerPos=dir>0?EN_TWR_X0:MAP_W-EN_TWR_X0;
-      const mirX=dir>0?t.x:MAP_W-t.x; // p1論理座標系
-      if(Math.abs(mirX-towerPos)<t.range){
+      // 敵タワーへの距離
+      const myLogicX=dir>0?t.x:MAP_W-t.x;
+      const towerLogicX=dir>0?opp.tx:MAP_W-opp.tx;
+      if(Math.abs(myLogicX-towerLogicX)<t.range){
         opp.hp-=t.atk*0.06;
-        gs.effects.push({id:effectIdCtr++,type:'troop',
-          owner:owner===gs.p1?'p1':'p2',
-          x:t.x, tx:null, lane:t.lane, life:12, maxLife:12});
-        t.atkTimer=20; t.attacking=true;
+        const owner_str=owner===gs.p1?'p1':'p2';
+        gs.effects.push({id:effectIdCtr++,type:'troop',owner:owner_str,defId:t.defId,
+          x:t.x,tx:null,lane:t.lane,life:14,maxLife:14});
+        t.atkTimer=22;t.attacking=true;
       } else {
-        t.x+=t.spd; // 前進
+        t.x+=t.spd;
+        t.walkPhase=(t.walkPhase||0)+0.18;
       }
     }
   });
 }
 
-function findTarget(t,enemies){
+function findTarget(t,enemies,dir){
   let best=null,bd=t.range;
   enemies.forEach(e=>{
-    if(e.hp<=0)return;
-    if(!canAtk(t.lane,e.lane))return;
+    if(e.hp<=0||!canAtk(t.lane,e.lane))return;
+    // 両者とも自分の論理座標系（0〜MAP_W）で比較
     const d=Math.abs(e.x-t.x);
     if(d<bd){bd=d;best=e;}
   });
   return best;
 }
-
 function canAtk(a,d){
-  if(a==='sky')  return d==='sky'||d==='land';
+  if(a==='sky') return d==='sky'||d==='land';
   if(a==='land') return d==='land';
-  if(a==='sea')  return d==='sea';
+  if(a==='sea') return d==='sea';
   return false;
 }
-
 function invasionDmg(attacker,defender){
-  if(attacker.tx>MAP_W/2) defender.hp-=INVADE_DMG;
-  attacker.troops.forEach(t=>{if(t.x>MAP_W-90) defender.hp-=0.01;});
+  // タワーが相手の陣地(SIDE_W以降)に入ったらダメージ
+  if(attacker.tx>SIDE_W) defender.hp-=INVADE_DMG;
+  attacker.troops.forEach(t=>{if(t.x>MAP_W-100) defender.hp-=0.01;});
 }
 
-// ============================================================
-// PUSH STATE
-// ============================================================
+// ── PUSH STATE ───────────────────────────────────────────────
 async function pushGs(){
   if(!roomRef)return;
   try{
@@ -471,303 +439,422 @@ async function pushGs(){
     }});
   }catch(e){}
 }
-
 function slim(arr){
-  return arr.slice(0,25).map(t=>({
-    id:t.id,defId:t.defId,x:+t.x.toFixed(1),
-    hp:+t.hp.toFixed(1),maxHp:t.maxHp,lane:t.lane,attacking:!!t.attacking
-  }));
+  return arr.slice(0,25).map(t=>({id:t.id,defId:t.defId,x:+t.x.toFixed(1),hp:+t.hp.toFixed(1),maxHp:t.maxHp,lane:t.lane,attacking:!!t.attacking,walkPhase:+(t.walkPhase||0).toFixed(2)}));
 }
 
-// ============================================================
-// RENDER
-// ============================================================
+// ── RENDER ───────────────────────────────────────────────────
 function renderAll(){
-  const cw=cvS.width, ch=cvS.height;
-  drawSelfView(ctxS,cw,ch);
-  drawEnemyView(ctxE,cw,ch);
+  drawSelfView(ctxS,cvS.width,cvS.height);
+  drawEnemyView(ctxE,cvE.width,cvE.height);
 }
 
+// 自陣ビュー（下画面）: 自分は左→右に進む視点
 function drawSelfView(ctx,cw,ch){
   ctx.clearRect(0,0,cw,ch);
-  drawBg(ctx,cw,ch);
+  drawBg(ctx,cw,ch,false);
   const myGs=myRole==='p1'?gs.p1:gs.p2;
   const enGs=myRole==='p1'?gs.p2:gs.p1;
-  const myOwner=myRole;
-  const enOwner=myRole==='p1'?'p2':'p1';
+  const myOwner=myRole, enOwner=myRole==='p1'?'p2':'p1';
 
-  // 敵の侵入歩兵（ミラーX）
+  // 敵の侵入歩兵（自陣に入ってきた敵: x > SIDE_W → 自陣視点でSIDE_Wからの距離）
   enGs.troops.forEach(t=>{
-    const mirX=MAP_W-t.x;
-    if(mirX<SIDE_W) drawTroop(ctx,{...t,x:mirX},cw,ch,true);
+    const mirX=MAP_W-t.x; // 敵から見た自陣方向 = 自分から見た論理X
+    if(mirX<=SIDE_W) drawTroop(ctx,{...t,x:mirX},cw,ch,true,false);
   });
-  // 自分の歩兵（自陣側）
+  // 自分の歩兵（自陣 x < SIDE_W）
   myGs.troops.forEach(t=>{
-    if(t.x<SIDE_W) drawTroop(ctx,t,cw,ch,false);
+    if(t.x<=SIDE_W) drawTroop(ctx,t,cw,ch,false,false);
   });
-
-  // エフェクト（自陣視点）
-  gs.effects.forEach(e=>{
-    if(e.type==='tower'&&e.owner===myOwner){
-      drawTowerEffect(ctx,toScreen(e.x,cw),ch,e);
-    }
-    if(e.type==='troop'&&e.owner===myOwner){
-      const sx=toScreen(e.x,cw);
-      if(e.x<SIDE_W) drawTroopEffect(ctx,sx,ch,e);
-    }
-    if(e.type==='troop'&&e.owner===enOwner){
-      const mirX=MAP_W-e.x;
-      if(mirX<SIDE_W) drawTroopEffect(ctx,toScreen(mirX,cw),ch,e);
-    }
-  });
-
+  // エフェクト
+  drawEffects(ctx,cw,ch,myOwner,enOwner,false,myGs,enGs);
   // 自タワー
-  drawTower(ctx,toScreen(myGs.tx,cw),ch,myGs.hp,false);
-  // エフェクト（敵タワー攻撃が自陣に来る）
-  gs.effects.forEach(e=>{
-    if(e.type==='tower'&&e.owner===enOwner){
-      // 敵タワーは敵陣にいる → 自陣視点ではミラー
-      const mirX=MAP_W-e.x;
-      if(mirX<SIDE_W) drawTowerEffect(ctx,toScreen(mirX,cw),ch,e);
-    }
-  });
+  drawTower(ctx,toScreen(myGs.tx,cw,SIDE_W),ch,myGs.hp,false);
 }
 
+// 敵陣ビュー（上画面）: 左右反転 → 敵も左から右に進んで見える
 function drawEnemyView(ctx,cw,ch){
   ctx.clearRect(0,0,cw,ch);
-  drawBg(ctx,cw,ch);
+  drawBg(ctx,cw,ch,true); // 反転背景
   const myGs=myRole==='p1'?gs.p1:gs.p2;
   const enGs=myRole==='p1'?gs.p2:gs.p1;
-  const myOwner=myRole;
-  const enOwner=myRole==='p1'?'p2':'p1';
+  const myOwner=myRole, enOwner=myRole==='p1'?'p2':'p1';
 
-  // 自分の侵入歩兵（敵陣 = x > SIDE_W → ミラー）
-  myGs.troops.forEach(t=>{
-    if(t.x>=SIDE_W){
-      const mirX=MAP_W-t.x;
-      drawTroop(ctx,{...t,x:mirX},cw,ch,false);
-    }
-  });
-  // 敵の歩兵（敵陣側）
+  // 敵の歩兵（敵陣 x < SIDE_W → 反転してスクリーンに）
   enGs.troops.forEach(t=>{
-    if(t.x<SIDE_W) drawTroop(ctx,t,cw,ch,true);
-  });
-
-  // エフェクト（敵視点）
-  gs.effects.forEach(e=>{
-    if(e.type==='tower'&&e.owner===enOwner){
-      drawTowerEffect(ctx,toScreen(e.x,cw),ch,e);
-    }
-    if(e.type==='troop'&&e.owner===enOwner){
-      if(e.x<SIDE_W) drawTroopEffect(ctx,toScreen(e.x,cw),ch,e);
-    }
-    if(e.type==='troop'&&e.owner===myOwner){
-      const mirX=MAP_W-e.x;
-      if(mirX<SIDE_W) drawTroopEffect(ctx,toScreen(mirX,cw),ch,e);
+    if(t.x<=SIDE_W){
+      // 反転: 敵陣ビューでは右→左が奥、敵は左から右に進んで見えるよう反転
+      const rx=SIDE_W-t.x; // 反転X
+      drawTroop(ctx,{...t,x:rx},cw,ch,true,true);
     }
   });
-
-  // 敵タワー（右端側）
-  const enTX=cw-toScreen(enGs.tx,cw);
+  // 自分の侵入歩兵（敵陣に入った自軍: x > SIDE_W → ミラー）
+  myGs.troops.forEach(t=>{
+    if(t.x>SIDE_W){
+      const rx=MAP_W-t.x; // 敵陣視点
+      const mirX=SIDE_W-rx;
+      if(mirX>=0) drawTroop(ctx,{...t,x:mirX},cw,ch,false,true);
+    }
+  });
+  // エフェクト
+  drawEffects(ctx,cw,ch,myOwner,enOwner,true,myGs,enGs);
+  // 敵タワー
+  const enTX=toScreen(SIDE_W-enGs.tx,cw,SIDE_W);
   drawTower(ctx,enTX,ch,enGs.hp,true);
 }
 
-function drawBg(ctx,cw,ch){
+function drawEffects(ctx,cw,ch,myOwner,enOwner,isEnemyView,myGs,enGs){
+  gs.effects.forEach(e=>{
+    if(e.type==='tower'){
+      const isMine=e.owner===myOwner;
+      let sx;
+      if(isEnemyView){
+        if(!isMine) sx=toScreen(SIDE_W-e.x,cw,SIDE_W);
+        else return; // 自分のタワー攻撃は敵陣ビューには出さない
+      } else {
+        if(isMine) sx=toScreen(e.x,cw,SIDE_W);
+        else return;
+      }
+      drawTowerEffect(ctx,sx,cw,ch,e);
+    }
+    if(e.type==='troop'){
+      const isMine=e.owner===myOwner;
+      let sx;
+      if(isEnemyView){
+        if(!isMine&&e.x<=SIDE_W) sx=toScreen(SIDE_W-e.x,cw,SIDE_W);
+        else if(isMine&&e.x>SIDE_W){const rx=MAP_W-e.x;sx=toScreen(SIDE_W-rx,cw,SIDE_W);}
+        else return;
+      } else {
+        if(isMine&&e.x<=SIDE_W) sx=toScreen(e.x,cw,SIDE_W);
+        else if(!isMine){const mirX=MAP_W-e.x;if(mirX<=SIDE_W)sx=toScreen(mirX,cw,SIDE_W);}
+        else return;
+      }
+      if(sx!==undefined) drawTroopEffect(ctx,sx,cw,ch,e,isEnemyView);
+    }
+  });
+}
+
+// ── BACKGROUND ───────────────────────────────────────────────
+function drawBg(ctx,cw,ch,flip){
   // 空
   const sg=ctx.createLinearGradient(0,0,0,ch*0.33);
-  sg.addColorStop(0,'#06101e'); sg.addColorStop(1,'#0e2038');
-  ctx.fillStyle=sg; ctx.fillRect(0,0,cw,ch*0.33);
+  sg.addColorStop(0,'#06101e');sg.addColorStop(1,'#0e2038');
+  ctx.fillStyle=sg;ctx.fillRect(0,0,cw,ch*0.33);
   // 星
-  ctx.fillStyle='#ffffff44';
-  [[0.1,0.05],[0.3,0.12],[0.5,0.04],[0.7,0.09],[0.85,0.14],[0.15,0.18],[0.65,0.18]].forEach(([rx,ry])=>{
-    ctx.beginPath(); ctx.arc(rx*cw,ry*ch*0.33,1,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle='#ffffff55';
+  [[0.1,0.05],[0.3,0.12],[0.5,0.04],[0.7,0.09],[0.85,0.14],[0.18,0.18],[0.62,0.2]].forEach(([rx,ry])=>{
+    const x=flip?(1-rx)*cw:rx*cw;
+    ctx.beginPath();ctx.arc(x,ry*ch*0.33,1.2,0,Math.PI*2);ctx.fill();
   });
   // 雲
-  ctx.fillStyle='#ffffff0c';
-  [[0.2,ch*0.08,35,10],[0.55,ch*0.05,48,13],[0.82,ch*0.13,28,8]].forEach(([rx,y,w,h])=>{
-    ctx.beginPath(); ctx.ellipse(rx*cw,y,w,h,0,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle='#ffffff0e';
+  [[0.2,ch*0.07,38,11],[0.55,ch*0.05,50,14],[0.82,ch*0.13,30,9]].forEach(([rx,y,w,h])=>{
+    const x=flip?(1-rx)*cw:rx*cw;
+    ctx.beginPath();ctx.ellipse(x,y,w,h,0,0,Math.PI*2);ctx.fill();
   });
   // 陸
   const lg=ctx.createLinearGradient(0,ch*0.33,0,ch*0.66);
-  lg.addColorStop(0,'#142010'); lg.addColorStop(1,'#1e3018');
-  ctx.fillStyle=lg; ctx.fillRect(0,ch*0.33,cw,ch*0.33);
-  // 草ライン
-  ctx.fillStyle='#2a5018cc';
-  for(let x=0;x<cw;x+=20){ctx.fillRect(x,ch*0.33,2,5);}
-  // 木
-  [[0.08,0.38],[0.22,0.35],[0.45,0.37],[0.72,0.36],[0.9,0.39]].forEach(([rx,ry])=>{
-    ctx.fillStyle='#1a3010';
-    ctx.fillRect(rx*cw-2,ry*ch,4,ch*0.06);
-    ctx.fillStyle='#2a5018';
-    ctx.beginPath(); ctx.arc(rx*cw,ry*ch,8,0,Math.PI*2); ctx.fill();
+  lg.addColorStop(0,'#142010');lg.addColorStop(1,'#1e3018');
+  ctx.fillStyle=lg;ctx.fillRect(0,ch*0.33,cw,ch*0.33);
+  ctx.fillStyle='#2a501888';
+  for(let x=0;x<cw;x+=22){ctx.fillRect(flip?cw-x:x,ch*0.33,2,6);}
+  [[0.08,0.37],[0.22,0.34],[0.45,0.36],[0.72,0.35],[0.9,0.38]].forEach(([rx,ry])=>{
+    const x=flip?(1-rx)*cw:rx*cw;
+    ctx.fillStyle='#1a3010';ctx.fillRect(x-2,ry*ch,4,ch*0.06);
+    ctx.fillStyle='#2a5018';ctx.beginPath();ctx.arc(x,ry*ch,8,0,Math.PI*2);ctx.fill();
   });
   // 海
   const wg=ctx.createLinearGradient(0,ch*0.66,0,ch);
-  wg.addColorStop(0,'#08182e'); wg.addColorStop(1,'#040e1c');
-  ctx.fillStyle=wg; ctx.fillRect(0,ch*0.66,cw,ch*0.34);
-  // 波紋
-  ctx.strokeStyle='#1a4a7a66'; ctx.lineWidth=1;
-  for(let x=0;x<cw;x+=30){
-    ctx.beginPath(); ctx.moveTo(x,ch*0.72);
-    ctx.quadraticCurveTo(x+10,ch*0.715,x+20,ch*0.72); ctx.stroke();
+  wg.addColorStop(0,'#08182e');wg.addColorStop(1,'#040e1c');
+  ctx.fillStyle=wg;ctx.fillRect(0,ch*0.66,cw,ch*0.34);
+  ctx.strokeStyle='#1a4a7a55';ctx.lineWidth=1;
+  for(let x=0;x<cw;x+=32){
+    const bx=flip?cw-x:x;
+    ctx.beginPath();ctx.moveTo(bx,ch*0.72);ctx.quadraticCurveTo(bx+10,ch*0.715,bx+20,ch*0.72);ctx.stroke();
   }
   // ゾーンラベル
-  ctx.font='bold 9px Rajdhani'; ctx.fillStyle='#ffffff1a';
-  ctx.fillText('✈ SKY',5,11);
-  ctx.fillText('⚔ LAND',5,ch*0.33+13);
-  ctx.fillText('🌊 SEA',5,ch*0.66+13);
-  // 境界線（自陣端）
-  ctx.strokeStyle='#ffd70018'; ctx.lineWidth=1.5; ctx.setLineDash([4,8]);
-  ctx.beginPath(); ctx.moveTo(cw-1,0); ctx.lineTo(cw-1,ch); ctx.stroke();
-  ctx.setLineDash([]);
+  ctx.font='bold 9px Rajdhani';ctx.fillStyle='#ffffff1a';
+  ctx.fillText('✈ SKY',flip?cw-50:5,11);
+  ctx.fillText('⚔ LAND',flip?cw-60:5,ch*0.33+13);
+  ctx.fillText('🌊 SEA',flip?cw-55:5,ch*0.66+13);
 }
 
-function drawTroop(ctx,t,cw,ch,isEnemy){
-  const def=TROOPS[t.defId]; if(!def)return;
-  const sx=(t.x/SIDE_W)*cw;
+// ── DRAW TROOP ───────────────────────────────────────────────
+function drawTroop(ctx,t,cw,ch,isEnemy,isEnemyView){
+  const def=TROOPS[t.defId];if(!def)return;
+  const sx=toScreen(t.x,cw,SIDE_W);
   const sy=laneY(t.lane,ch);
-  const sz=ch*0.14; // 大きめサイズ
+  const sz=ch*0.16;
+  const phase=t.walkPhase||0;
 
-  // 攻撃中は震える
-  const shake=t.attacking?(Math.random()-0.5)*3:0;
-  const drawX=sx+shake;
+  // 歩行アニメーション（キャラ別）
+  let bobY=0, scaleX=1, scaleY=1, rot=0;
+  if(!t.attacking){
+    if(def.lane==='sky'){
+      // 空キャラ: 羽ばたき（上下+スケール）
+      bobY=Math.sin(phase*2)*sz*0.22;
+      scaleY=1+Math.abs(Math.sin(phase*2))*0.12;
+    } else if(def.lane==='land'){
+      // 陸キャラ: 歩行バウンド
+      bobY=Math.abs(Math.sin(phase*2))*sz*-0.18;
+      rot=Math.sin(phase)*0.08;
+    } else {
+      // 海キャラ: うねり
+      bobY=Math.sin(phase)*sz*0.15;
+      scaleX=1+Math.sin(phase*1.5)*0.06;
+    }
+  } else {
+    // 攻撃中: 震え
+    bobY=(Math.random()-0.5)*sz*0.15;
+  }
 
   // 影
-  ctx.fillStyle='rgba(0,0,0,0.3)';
-  ctx.beginPath(); ctx.ellipse(drawX,sy+sz*0.6,sz*0.5,sz*0.12,0,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle='rgba(0,0,0,0.28)';
+  ctx.beginPath();ctx.ellipse(sx,sy+sz*0.65,sz*0.5,sz*0.1,0,0,Math.PI*2);ctx.fill();
 
-  // 陣営グロー
-  ctx.shadowColor=isEnemy?'#ff6644':'#44aaff';
-  ctx.shadowBlur=t.attacking?14:6;
+  // グロー
+  const glowCol=isEnemy?'#ff4422':'#2288ff';
+  ctx.shadowColor=glowCol;
+  ctx.shadowBlur=t.attacking?18:8;
 
-  // アイコン（大きめ）
-  ctx.font=`${Math.round(sz*1.8)}px serif`;
+  ctx.save();
+  ctx.translate(sx,sy+bobY);
+  ctx.scale(scaleX,scaleY);
+  if(rot) ctx.rotate(rot);
+
+  // キャラアイコン（flip反転）
+  // 敵は左向き（反転）、味方は右向き
+  const shouldFlip=(isEnemy&&def.flip)||(!isEnemy&&!def.flip);
+  if(shouldFlip){ctx.scale(-1,1);}
+
+  // 色フィルタ（味方=青オーバーレイ、敵=赤オーバーレイ）
+  ctx.font=`${Math.round(sz*1.9)}px serif`;
   ctx.textAlign='center';
-  ctx.fillText(def.icon,drawX,sy+sz*0.7);
+  ctx.fillText(def.icon,0,sz*0.7);
   ctx.textAlign='left';
+
+  // 色オーバーレイ
+  ctx.globalCompositeOperation='multiply';
+  ctx.fillStyle=isEnemy?'#ff8866':'#88ccff';
+  ctx.globalAlpha=0.35;
+  ctx.beginPath();ctx.arc(0,0,sz*0.9,0,Math.PI*2);ctx.fill();
+  ctx.globalCompositeOperation='source-over';
+  ctx.globalAlpha=1;
+
+  ctx.restore();
   ctx.shadowBlur=0;
 
-  // HPバー（幅広め）
-  const barW=sz*2.4;
-  const hpR=Math.max(0,t.hp/t.maxHp);
-  ctx.fillStyle='#0008'; ctx.fillRect(drawX-barW/2,sy-sz*0.85,barW,5);
-  const hpCol=hpR>0.5?'#44ff88':hpR>0.25?'#ffcc00':'#ff4444';
-  ctx.fillStyle=hpCol;
-  ctx.fillRect(drawX-barW/2,sy-sz*0.85,barW*hpR,5);
-  // HPバー枠
-  ctx.strokeStyle='#ffffff22'; ctx.lineWidth=0.5;
-  ctx.strokeRect(drawX-barW/2,sy-sz*0.85,barW,5);
+  // HPバー
+  const barW=sz*2.6,hpR=Math.max(0,t.hp/t.maxHp);
+  ctx.fillStyle='#0009';ctx.fillRect(sx-barW/2,sy-sz*0.95,barW,5);
+  ctx.fillStyle=hpR>0.5?'#44ff88':hpR>0.25?'#ffcc00':'#ff4444';
+  ctx.fillRect(sx-barW/2,sy-sz*0.95,barW*hpR,5);
+  ctx.strokeStyle='#ffffff22';ctx.lineWidth=0.5;
+  ctx.strokeRect(sx-barW/2,sy-sz*0.95,barW,5);
 
-  // 攻撃中インジケーター
-  if(t.attacking){
-    ctx.fillStyle=isEnemy?'#ff664488':'#44aaff88';
-    ctx.beginPath(); ctx.arc(drawX,sy-sz,4,0,Math.PI*2); ctx.fill();
-  }
+  // 陣営バッジ
+  ctx.fillStyle=isEnemy?'#ff442288':'#2288ff88';
+  ctx.beginPath();ctx.arc(sx,sy-sz*1.1,4,0,Math.PI*2);ctx.fill();
 }
 
+// ── DRAW TOWER ───────────────────────────────────────────────
 function drawTower(ctx,sx,ch,hp,isEnemy){
   const hpR=Math.max(0,hp/MAX_HP);
   const col=isEnemy?'#ff6644':'#44aaff';
   const sz=ch*0.15;
-  if(hpR<0.3){ctx.shadowColor=isEnemy?'#ff4444':'#ff4444';ctx.shadowBlur=14;}
-
-  // 塔の壁
-  const wallGrad=ctx.createLinearGradient(sx-sz*0.5,0,sx+sz*0.5,0);
-  wallGrad.addColorStop(0,isEnemy?'#1a0808':'#081018');
-  wallGrad.addColorStop(0.5,isEnemy?'#3a1010':'#0c1e2e');
-  wallGrad.addColorStop(1,isEnemy?'#1a0808':'#081018');
-  ctx.fillStyle=wallGrad;
-  ctx.fillRect(sx-sz*0.5,ch*0.27,sz,ch*0.46);
-  // 塔の縁石
-  ctx.fillStyle=isEnemy?'#4a1818':'#0e2236';
-  ctx.fillRect(sx-sz*0.6,ch*0.27,sz*1.2,ch*0.04);
-  ctx.fillRect(sx-sz*0.6,ch*0.73-ch*0.02,sz*1.2,ch*0.04);
+  if(hpR<0.3){ctx.shadowColor='#ff2200';ctx.shadowBlur=18;}
+  // 塔壁
+  const wg=ctx.createLinearGradient(sx-sz*0.5,0,sx+sz*0.5,0);
+  wg.addColorStop(0,isEnemy?'#1a0808':'#081018');
+  wg.addColorStop(0.5,isEnemy?'#3a1010':'#0c1e2e');
+  wg.addColorStop(1,isEnemy?'#1a0808':'#081018');
+  ctx.fillStyle=wg;ctx.fillRect(sx-sz*0.55,ch*0.26,sz*1.1,ch*0.48);
+  // 城壁凸
+  for(let i=0;i<3;i++){
+    ctx.fillStyle=isEnemy?'#4a1818':'#0e2236';
+    ctx.fillRect(sx-sz*0.5+i*sz*0.38,ch*0.22,sz*0.28,ch*0.05);
+  }
   // 旗
   ctx.fillStyle=col;
-  ctx.beginPath();
-  ctx.moveTo(sx,ch*0.14); ctx.lineTo(sx+sz*0.6,ch*0.21); ctx.lineTo(sx,ch*0.27);
-  ctx.fill();
-  ctx.strokeStyle=col+'88'; ctx.lineWidth=1.5;
-  ctx.beginPath(); ctx.moveTo(sx,ch*0.14); ctx.lineTo(sx,ch*0.74); ctx.stroke();
+  ctx.beginPath();ctx.moveTo(sx,ch*0.13);ctx.lineTo(sx+sz*0.65,ch*0.20);ctx.lineTo(sx,ch*0.26);ctx.fill();
+  ctx.strokeStyle=col+'99';ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.moveTo(sx,ch*0.13);ctx.lineTo(sx,ch*0.74);ctx.stroke();
   // 剣士
-  ctx.shadowColor=col; ctx.shadowBlur=8;
-  ctx.font=`${Math.round(sz*1.1)}px serif`;
+  ctx.shadowColor=col;ctx.shadowBlur=10;
+  ctx.font=`${Math.round(sz*1.15)}px serif`;
   ctx.textAlign='center';
   ctx.fillText(isEnemy?'🗡️':'⚔️',sx,ch*0.67);
   ctx.textAlign='left';
   ctx.shadowBlur=0;
   // HPゲージ
-  ctx.fillStyle='#0008'; ctx.fillRect(sx-22,ch*0.74,44,6);
   const hcol=hpR>0.5?'#44ff88':hpR>0.25?'#ffcc00':'#ff4444';
-  ctx.fillStyle=hcol; ctx.fillRect(sx-22,ch*0.74,44*hpR,6);
-  ctx.strokeStyle='#ffffff22'; ctx.lineWidth=0.5;
-  ctx.strokeRect(sx-22,ch*0.74,44,6);
-  // HP数値
-  ctx.fillStyle='#ccc'; ctx.font='bold 9px Cinzel'; ctx.textAlign='center';
-  ctx.fillText(Math.max(0,Math.floor(hp)),sx,ch*0.86);
+  ctx.fillStyle='#000a';ctx.fillRect(sx-24,ch*0.75,48,7);
+  ctx.fillStyle=hcol;ctx.fillRect(sx-24,ch*0.75,48*hpR,7);
+  ctx.strokeStyle='#ffffff22';ctx.lineWidth=0.5;ctx.strokeRect(sx-24,ch*0.75,48,7);
+  ctx.fillStyle='#ccc';ctx.font='bold 9px Cinzel';ctx.textAlign='center';
+  ctx.fillText(Math.max(0,Math.floor(hp)),sx,ch*0.88);
   ctx.textAlign='left';
 }
 
-// タワー攻撃エフェクト（縦の閃光 + 剣マーク）
-function drawTowerEffect(ctx,sx,ch,e){
+// ── TOWER ATTACK EFFECT ──────────────────────────────────────
+function drawTowerEffect(ctx,sx,cw,ch,e){
   const prog=1-(e.life/e.maxLife);
-  const alpha=(1-prog)*0.85;
-  const rw=(e.range/SIDE_W)*cvS.width;
+  const alpha=(1-prog)*0.9;
+  const rw=(e.range/SIDE_W)*cw;
   ctx.save();
   ctx.globalAlpha=alpha;
+  // 縦の光柱
   const grd=ctx.createLinearGradient(sx,0,sx+rw,0);
-  grd.addColorStop(0,'rgba(255,220,60,0.9)');
-  grd.addColorStop(0.4,'rgba(255,120,20,0.5)');
-  grd.addColorStop(1,'rgba(255,40,0,0)');
-  ctx.fillStyle=grd; ctx.fillRect(sx,0,rw,ch);
-  const flash=ctx.createRadialGradient(sx,ch*0.5,0,sx,ch*0.5,rw*0.7);
-  flash.addColorStop(0,'rgba(255,255,180,0.7)');
-  flash.addColorStop(0.5,'rgba(255,140,0,0.2)');
+  grd.addColorStop(0,'rgba(255,230,80,1)');
+  grd.addColorStop(0.3,'rgba(255,120,20,0.7)');
+  grd.addColorStop(1,'rgba(255,0,0,0)');
+  ctx.fillStyle=grd;ctx.fillRect(sx,0,rw,ch);
+  // 中心フラッシュ
+  const flash=ctx.createRadialGradient(sx,ch*0.5,0,sx,ch*0.5,rw*0.9);
+  flash.addColorStop(0,'rgba(255,255,200,0.95)');
+  flash.addColorStop(0.3,'rgba(255,160,0,0.5)');
   flash.addColorStop(1,'rgba(0,0,0,0)');
-  ctx.fillStyle=flash; ctx.fillRect(sx,0,rw*1.3,ch);
-  if(prog<0.5){
-    ctx.strokeStyle='#ffffcc'; ctx.lineWidth=2.5;
-    ctx.shadowColor='#ffaa00'; ctx.shadowBlur=10;
-    ctx.beginPath(); ctx.moveTo(sx+4,ch*0.15); ctx.lineTo(sx+rw*0.6,ch*0.85); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(sx+4,ch*0.85); ctx.lineTo(sx+rw*0.6,ch*0.15); ctx.stroke();
+  ctx.fillStyle=flash;ctx.fillRect(sx,0,rw*1.5,ch);
+  // 剣の軌跡（複数）
+  if(prog<0.55){
+    ctx.strokeStyle='#ffffaa';ctx.lineWidth=3;
+    ctx.shadowColor='#ffaa00';ctx.shadowBlur=14;
+    [[ch*0.1,ch*0.9,rw*0.7],[ch*0.9,ch*0.1,rw*0.6],[ch*0.3,ch*0.95,rw*0.5]].forEach(([y1,y2,len])=>{
+      ctx.beginPath();ctx.moveTo(sx+3,y1);ctx.lineTo(sx+len,y2);ctx.stroke();
+    });
+    ctx.lineWidth=1.5;ctx.strokeStyle='#ffffff99';
+    ctx.beginPath();ctx.moveTo(sx,ch*0.2);ctx.lineTo(sx+rw*0.8,ch*0.8);ctx.stroke();
   }
+  // 衝撃波リング
+  const ringR=prog*rw*1.2;
+  ctx.strokeStyle=`rgba(255,200,50,${(1-prog)*0.8})`;
+  ctx.lineWidth=2;ctx.shadowBlur=8;
+  ctx.beginPath();ctx.arc(sx,ch*0.5,ringR,0,Math.PI*2);ctx.stroke();
   ctx.restore();
 }
 
-// 歩兵攻撃エフェクト（レーンに沿った閃光）
-function drawTroopEffect(ctx,sx,ch,e){
+// ── TROOP ATTACK EFFECT ──────────────────────────────────────
+function drawTroopEffect(ctx,sx,cw,ch,e,isEnemyView){
+  const def=TROOPS[e.defId];if(!def)return;
   const prog=1-(e.life/e.maxLife);
-  const alpha=(1-prog)*0.75;
+  const alpha=(1-prog)*0.92;
   const sy=laneY(e.lane,ch);
-  const laneColors={sky:'#88ddff',land:'#88ff88',sea:'#4488ff'};
-  const col=laneColors[e.lane]||'#ffffff';
   ctx.save();
   ctx.globalAlpha=alpha;
-  // 攻撃波紋（レーン中心）
-  const r=(prog*0.6+0.15)*50;
-  const grad=ctx.createRadialGradient(sx,sy,0,sx,sy,r);
-  grad.addColorStop(0,col+'ee');
-  grad.addColorStop(0.4,col+'66');
-  grad.addColorStop(1,'rgba(0,0,0,0)');
-  ctx.fillStyle=grad;
-  ctx.beginPath(); ctx.ellipse(sx,sy,r,r*0.4,0,0,Math.PI*2); ctx.fill();
-  // 衝撃線
-  if(prog<0.4){
-    ctx.strokeStyle=col; ctx.lineWidth=2;
-    ctx.shadowColor=col; ctx.shadowBlur=8;
-    for(let i=0;i<4;i++){
-      const angle=(i/4)*Math.PI*2;
-      const len=r*0.8;
+
+  if(def.id===3){
+    // 弓兵: 矢が飛ぶ
+    const arrowProg=prog;
+    const startX=sx;
+    const endX=sx+(isEnemyView?-1:1)*(e.range||80)*(cw/SIDE_W)*arrowProg;
+    const arrowY=sy-Math.sin(arrowProg*Math.PI)*20;
+    ctx.strokeStyle='#ffcc44';ctx.lineWidth=2.5;
+    ctx.shadowColor='#ffaa00';ctx.shadowBlur=8;
+    ctx.beginPath();ctx.moveTo(startX,sy);ctx.lineTo(endX,arrowY);ctx.stroke();
+    // 矢尻
+    ctx.fillStyle='#ffcc44';
+    ctx.beginPath();
+    const ang=Math.atan2(arrowY-sy,endX-startX);
+    ctx.translate(endX,arrowY);ctx.rotate(ang);
+    ctx.moveTo(0,0);ctx.lineTo(-10,4);ctx.lineTo(-10,-4);
+    ctx.fill();
+    // 軌跡
+    ctx.strokeStyle='rgba(255,200,50,0.3)';ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(startX,sy);ctx.lineTo(endX,arrowY);ctx.stroke();
+
+  } else if(def.id===0||def.id===9){
+    // 空系: 爪痕＋羽根
+    ctx.strokeStyle=def.id===9?'#ff8822':'#88ccff';
+    ctx.lineWidth=3;ctx.shadowColor=def.id===9?'#ff4400':'#4488ff';ctx.shadowBlur=12;
+    for(let i=0;i<3;i++){
       ctx.beginPath();
-      ctx.moveTo(sx+Math.cos(angle)*6,sy+Math.sin(angle)*3);
-      ctx.lineTo(sx+Math.cos(angle)*len,sy+Math.sin(angle)*len*0.4);
+      ctx.moveTo(sx-10+i*8,sy-15);
+      ctx.lineTo(sx+20+i*8+prog*30,sy+15);
       ctx.stroke();
     }
+    // 羽根パーティクル
+    for(let i=0;i<5;i++){
+      const px=sx+(i-2)*12+prog*40;
+      const py=sy+(Math.sin(prog*Math.PI+i)*12);
+      ctx.fillStyle=def.id===9?'#ff8822':'#88ccff';
+      ctx.font='12px serif';ctx.textAlign='center';
+      ctx.fillText(def.id===9?'🔥':'💨',px,py);
+    }
+
+  } else if(def.id===1){
+    // ドラゴン: 炎ブレス
+    const len=(cw/SIDE_W)*80*prog;
+    const grd=ctx.createLinearGradient(sx,sy,sx+len,sy);
+    grd.addColorStop(0,'rgba(255,100,0,0.9)');
+    grd.addColorStop(0.5,'rgba(255,200,0,0.6)');
+    grd.addColorStop(1,'rgba(255,50,0,0)');
+    ctx.fillStyle=grd;
+    ctx.beginPath();
+    ctx.ellipse(sx+len*0.5,sy,len*0.6,16+prog*8,0,0,Math.PI*2);
+    ctx.fill();
+    for(let i=0;i<6;i++){
+      const fx=sx+Math.random()*len,fy=sy+(Math.random()-0.5)*24;
+      ctx.fillStyle='rgba(255,180,0,0.8)';ctx.font='14px serif';ctx.textAlign='center';
+      ctx.fillText('🔥',fx,fy);
+    }
+
+  } else if(def.id===4){
+    // オーガ: 地割れ
+    ctx.strokeStyle='#aa4400';ctx.lineWidth=4;ctx.shadowColor='#ff6600';ctx.shadowBlur=10;
+    for(let i=0;i<3;i++){
+      const ox=(i-1)*20;
+      ctx.beginPath();ctx.moveTo(sx+ox,sy-20);ctx.lineTo(sx+ox+prog*40,sy+20);ctx.stroke();
+    }
+    ctx.fillStyle='rgba(180,80,0,0.3)';
+    ctx.beginPath();ctx.ellipse(sx+prog*20,sy,30+prog*20,10,0,0,Math.PI*2);ctx.fill();
+
+  } else if(def.id===5){
+    // 忍者: 手裏剣
+    const nx=sx+(isEnemyView?-1:1)*prog*(e.range||30)*(cw/SIDE_W);
+    ctx.save();ctx.translate(nx,sy);ctx.rotate(prog*Math.PI*4);
+    ctx.fillStyle='#aaaaaa';ctx.shadowColor='#ffffff';ctx.shadowBlur=6;
+    ctx.font='18px serif';ctx.textAlign='center';ctx.fillText('✦',0,6);
+    ctx.restore();
+
+  } else if(def.id===6||def.id===8){
+    // 海系: 水流
+    const wlen=(cw/SIDE_W)*(def.range||50)*prog;
+    const wgrd=ctx.createLinearGradient(sx,sy,sx+wlen,sy);
+    wgrd.addColorStop(0,'rgba(20,100,200,0.9)');
+    wgrd.addColorStop(1,'rgba(0,150,255,0)');
+    ctx.fillStyle=wgrd;
+    ctx.beginPath();ctx.ellipse(sx+wlen*0.5,sy,wlen*0.6,12,0,0,Math.PI*2);ctx.fill();
+    for(let i=0;i<4;i++){
+      ctx.fillStyle='rgba(100,180,255,0.7)';ctx.font='12px serif';ctx.textAlign='center';
+      ctx.fillText('💧',sx+i*(wlen/3),sy+(Math.sin(prog*Math.PI+i)*8));
+    }
+
+  } else if(def.id===7){
+    // 人魚: バブル
+    for(let i=0;i<5;i++){
+      const bx=sx+(i-2)*15+prog*20,by=sy-(i*5+prog*20);
+      const br=4+i*2;
+      ctx.strokeStyle=`rgba(100,200,255,${(1-prog)*0.8})`;
+      ctx.lineWidth=1.5;
+      ctx.beginPath();ctx.arc(bx,by,br,0,Math.PI*2);ctx.stroke();
+    }
+
+  } else {
+    // デフォルト: 衝撃波
+    const r=prog*55;
+    const sg=ctx.createRadialGradient(sx,sy,0,sx,sy,r);
+    sg.addColorStop(0,`rgba(255,255,150,${(1-prog)*0.8})`);
+    sg.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.fillStyle=sg;
+    ctx.beginPath();ctx.ellipse(sx,sy,r,r*0.45,0,0,Math.PI*2);ctx.fill();
+    ctx.strokeStyle=`rgba(255,200,50,${(1-prog)*0.7})`;
+    ctx.lineWidth=2;ctx.beginPath();ctx.ellipse(sx,sy,r*0.9,r*0.4,0,0,Math.PI*2);ctx.stroke();
   }
+  ctx.textAlign='left';
   ctx.restore();
 }
 
-function toScreen(wx,cw){ return (wx/SIDE_W)*cw; }
+function toScreen(wx,cw,sideW){return(wx/sideW)*cw;}
 function laneY(lane,ch){
   if(lane==='sky')  return ch*0.17;
   if(lane==='land') return ch*0.50;
@@ -775,14 +862,11 @@ function laneY(lane,ch){
   return ch*0.50;
 }
 
-// ============================================================
-// HUD
-// ============================================================
+// ── HUD ─────────────────────────────────────────────────────
 function updateHUDs(){
   const me=myRole==='p1'?gs.p1:gs.p2;
   const en=myRole==='p1'?gs.p2:gs.p1;
-  const mhp=Math.max(0,Math.floor(me.hp));
-  const ehp=Math.max(0,Math.floor(en.hp));
+  const mhp=Math.max(0,Math.floor(me.hp)),ehp=Math.max(0,Math.floor(en.hp));
   document.getElementById('my-hp-fill').style.width=(mhp/MAX_HP*100)+'%';
   document.getElementById('en-hp-fill').style.width=(ehp/MAX_HP*100)+'%';
   document.getElementById('my-hp-num').textContent=mhp;
@@ -794,27 +878,16 @@ function updateHUDs(){
   });
 }
 
-// ============================================================
-// TROOP BUTTONS
-// ============================================================
+// ── TROOP BUTTONS ────────────────────────────────────────────
 function buildTroopButtons(){
   const c=document.getElementById('troop-btns');
   TROOPS.forEach((t,i)=>{
     const btn=document.createElement('div');
-    btn.className=`troop-btn ${t.lane}-btn`;
-    btn.id='tb'+i;
-    btn.innerHTML=`
-      <div class="lane-badge ${t.lane}-badge">${t.lane==='sky'?'✈':t.lane==='sea'?'🌊':'⚔'}</div>
-      <div class="troop-icon">${t.icon}</div>
-      <div class="troop-name">${t.name}</div>
-      <div class="troop-cost">-${t.cost}HP</div>`;
+    btn.className=`troop-btn ${t.lane}-btn`;btn.id='tb'+i;
+    btn.innerHTML=`<div class="lane-badge ${t.lane}-badge">${t.lane==='sky'?'✈':t.lane==='sea'?'🌊':'⚔'}</div><div class="troop-icon">${t.icon}</div><div class="troop-name">${t.name}</div><div class="troop-cost">-${t.cost}HP</div>`;
     const spawn=()=>{
       const me=myRole==='p1'?gs.p1:gs.p2;
-      if(me.hp<=t.cost+8){
-        btn.style.border='1.5px solid #ff4444';
-        setTimeout(()=>btn.style.border='',400);
-        return;
-      }
+      if(me.hp<=t.cost+8){btn.style.boxShadow='0 0 12px #ff4444';setTimeout(()=>btn.style.boxShadow='',400);return;}
       myInput.spawnTroop=i;
     };
     btn.addEventListener('touchstart',e=>{e.preventDefault();spawn();},{passive:false});
@@ -823,16 +896,14 @@ function buildTroopButtons(){
   });
 }
 
-// ============================================================
-// CONTROLS
-// ============================================================
+// ── CONTROLS ─────────────────────────────────────────────────
 function setupControls(){
   hold('btn-fwd', ()=>myInput.fwd=true,  ()=>myInput.fwd=false);
   hold('btn-back',()=>myInput.back=true, ()=>myInput.back=false);
   hold('btn-sword',()=>myInput.attack=true,()=>myInput.attack=false);
 }
 function hold(id,dn,up){
-  const el=document.getElementById(id); if(!el)return;
+  const el=document.getElementById(id);if(!el)return;
   el.addEventListener('touchstart',e=>{e.preventDefault();dn();el.classList.add('pressed');},{passive:false});
   el.addEventListener('touchend',  e=>{e.preventDefault();up();el.classList.remove('pressed');},{passive:false});
   el.addEventListener('mousedown', ()=>{dn();el.classList.add('pressed');});
@@ -840,23 +911,20 @@ function hold(id,dn,up){
   el.addEventListener('mouseleave',()=>{up();el.classList.remove('pressed');});
 }
 
-// ============================================================
-// RESULT / DISCONNECT
-// ============================================================
+// ── RESULT / DISCONNECT ──────────────────────────────────────
 function showResult(winner){
+  bgmRunning=false;
   const isWin=winner===myRole;
+  isWin?playVictorySfx():playDefeatSfx();
   const ov=document.getElementById('result-overlay');
   const t=document.getElementById('result-title');
   t.textContent=isWin?'VICTORY':'DEFEAT';
   t.style.color=isWin?'#ffd700':'#ff4444';
   t.style.textShadow=isWin?'0 0 40px #ffd70099':'0 0 40px #ff444499';
   ov.style.display='flex';
-  if(roomRef) update(roomRef,{status:'finished'}).catch(()=>{});
+  if(roomRef)update(roomRef,{status:'finished'}).catch(()=>{});
 }
-function showDisconnect(){
-  gameActive=false;
-  document.getElementById('disconnect-msg').style.display='flex';
-}
+function showDisconnect(){gameActive=false;document.getElementById('disconnect-msg').style.display='flex';}
 </script>
 </body>
 </html>
